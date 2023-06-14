@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth", "Digivance.Auth\Digivance.Auth.csproj", "{86C4871B-FFC4-4DC6-AB32-484BE3ABBEB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Tests", "Digivance.Auth.Tests\Digivance.Auth.Tests.csproj", "{0CE148AB-5A67-4FD2-AA9D-1F01B05913EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86C4871B-FFC4-4DC6-AB32-484BE3ABBEB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86C4871B-FFC4-4DC6-AB32-484BE3ABBEB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86C4871B-FFC4-4DC6-AB32-484BE3ABBEB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86C4871B-FFC4-4DC6-AB32-484BE3ABBEB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CE148AB-5A67-4FD2-AA9D-1F01B05913EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CE148AB-5A67-4FD2-AA9D-1F01B05913EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CE148AB-5A67-4FD2-AA9D-1F01B05913EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CE148AB-5A67-4FD2-AA9D-1F01B05913EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3BBA6BCB-9B1B-469A-B3FC-AFCF07321D43}
+	EndGlobalSection
+EndGlobal
