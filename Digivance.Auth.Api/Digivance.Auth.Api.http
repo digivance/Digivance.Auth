@@ -1,0 +1,6 @@
+@Digivance.Auth.Api_HostAddress = http://localhost:5175
+
+GET {{Digivance.Auth.Api_HostAddress}}/healthz/
+Accept: application/json
+
+###
