@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <Version>0.1.0</Version>
     <Authors>dmayor, digivance</Authors>
+    <Company>Digivance Technologies</Company>
   </PropertyGroup>
 
 </Project>
