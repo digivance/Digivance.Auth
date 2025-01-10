@@ -8,6 +8,5 @@ namespace Digivance.Auth.Data.Commands
 {
     public record UpdateTenant : CreateTenant
     {
-        public Guid tenantId {  get; set; }
     }
 }

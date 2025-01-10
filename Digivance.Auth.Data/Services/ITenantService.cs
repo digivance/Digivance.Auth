@@ -67,6 +67,6 @@ namespace Digivance.Auth.Data.Services
         /// <param name="command">The update tenant command</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The updated tenant</returns>
-        public Task<Tenant> UpdateTenantAsync(UpdateTenant command, CancellationToken cancellationToken);
+        public Task<Tenant> UpdateTenantAsync(Guid id, UpdateTenant command, CancellationToken cancellationToken);
     }
 }

@@ -8,6 +8,5 @@ namespace Digivance.Auth.Data.Commands
 {
     public record UpdateUser : CreateUser
     {
-        public Guid UserId { get; set; }
     }
 }
