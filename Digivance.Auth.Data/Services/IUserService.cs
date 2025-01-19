@@ -11,7 +11,7 @@ namespace Digivance.Auth.Data.Services
     /// <summary>
     /// Interface representing a user data service
     /// </summary>
-    public interface IUserServices
+    public interface IUserService
     {
         /// <summary>
         /// Create a new user
