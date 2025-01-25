@@ -1,0 +1,35 @@
+name: PR Pipeline
+on:
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Install Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+
+    - name: Install PNPM and Vite
+      run: npm install -g pnpm vite
+
+    - name: Build UI
+      run: cd ./digivance_auth/app && pnpm run build
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build Assemblies
+      run: dotnet build --no-restore -c Release
+
+    - name: Test Assemblies
+      run: dotnet test --verbosity normal
