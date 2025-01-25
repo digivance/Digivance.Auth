@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Digivance.Data" Version="0.1.0-pre.61" />
+    <PackageReference Include="Digivance.Data" Version="0.1.0-pre.9" />
   </ItemGroup>
 
 </Project>
