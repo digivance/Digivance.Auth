@@ -22,11 +22,14 @@ jobs:
     - name: Install PNPM and Vite
       run: npm install -g pnpm vite
 
+    - name: Build UI
+      run: cd ./digivance_auth/app && pnpm run build
+
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
+    - name: Build Assemblies
       run: dotnet build --no-restore -c Release
 
-    - name: Test
+    - name: Test Assemblies
       run: dotnet test --verbosity normal

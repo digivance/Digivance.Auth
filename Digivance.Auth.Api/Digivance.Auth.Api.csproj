@@ -28,6 +28,6 @@
   </PropertyGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="call pnpm run build" WorkingDirectory="$(ProjectDir)../digivance_auth/app" />
+    <Exec Condition="'$(Configuration)' == 'Debug'" Command="call pnpm run build" WorkingDirectory="$(ProjectDir)../digivance_auth/app" />
   </Target>
 </Project>
