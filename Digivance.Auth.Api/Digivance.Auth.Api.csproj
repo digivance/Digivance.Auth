@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <Title>Digivance Auth Service</Title>
     <Version>0.1.0</Version>
@@ -29,6 +28,6 @@
   </PropertyGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="call ./BuildEvents/build-ui.bat" />
+    <Exec Command="call pnpm run build" WorkingDirectory="$(ProjectDir)../digivance_auth/app" />
   </Target>
 </Project>
