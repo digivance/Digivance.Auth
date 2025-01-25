@@ -1,4 +1,5 @@
 ﻿using Digivance.Auth.Data.EntityFramework.Entities;
+using Digivance.Data.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

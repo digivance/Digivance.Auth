@@ -1,4 +1,5 @@
-﻿using Digivance.Data.Models;
+﻿using Digivance.Data.EntityFramework.Entities;
+using Digivance.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,6 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// The tenant that this scope belongs to (may not be loaded when scope
         /// is a child, always trust TenantId instead)
         /// </summary>
-        public Tenant? Tenant { get; set; }
+        public TenantEntity? Tenant { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Digivance.Data.Models;
+﻿using Digivance.Data.EntityFramework.Entities;
+using Digivance.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

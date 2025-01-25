@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Digivance.Data.EntityFramework.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
