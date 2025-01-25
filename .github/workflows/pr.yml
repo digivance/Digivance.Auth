@@ -14,6 +14,12 @@ jobs:
       with:
         dotnet-version: 9.0.x
         
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v3
+
+    - name: Install Vite
+      run: npm install -g vite
+
     - name: Restore dependencies
       run: dotnet restore
 
