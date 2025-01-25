@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NoWarn>1701;1702;8618</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Digivance.Data" Version="0.1.0-pre.9" />
     <PackageReference Include="Digivance.Data.EntityFramework" Version="0.1.0-pre.9" />

@@ -12,6 +12,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NoWarn>1701;1702;8618</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="$(ProjectDir)wwwroot\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

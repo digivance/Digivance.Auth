@@ -9,4 +9,8 @@
     <Company>Digivance Technologies</Company>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NoWarn>1701;1702;8618</NoWarn>
+  </PropertyGroup>
+
 </Project>
