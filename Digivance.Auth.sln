@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data", "Digivance.Auth.Data\Digivance.Auth.Data.csproj", "{7F929109-9733-4E05-865D-5B0F27E19DC1}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Api", "Digivance.Auth.Api\Digivance.Auth.Api.csproj", "{BD255719-BECE-4E55-9887-C30AF119BCA6}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "digivance_auth", "digivance_auth\digivance_auth.esproj", "{DD64E76E-58C6-4D13-A397-A596C07620E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.EntityFramework", "Digivance.Auth.Data.EntityFramework\Digivance.Auth.Data.EntityFramework.csproj", "{DE1DC1FF-B49A-4EA3-9071-47E70EB76A7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{DD64E76E-58C6-4D13-A397-A596C07620E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD64E76E-58C6-4D13-A397-A596C07620E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD64E76E-58C6-4D13-A397-A596C07620E7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DE1DC1FF-B49A-4EA3-9071-47E70EB76A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE1DC1FF-B49A-4EA3-9071-47E70EB76A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE1DC1FF-B49A-4EA3-9071-47E70EB76A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE1DC1FF-B49A-4EA3-9071-47E70EB76A7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
