@@ -44,7 +44,7 @@ namespace Digivance.Auth.Api.Endpoints
                 .WithOpenApi(opt => new(opt) { Description = "Check the readiness of this application", OperationId = "Health Ready Check" });
 
             group
-                .MapGet("/live", ReadyAsync)
+                .MapGet("/live", LivenessAsync)
                 .HasApiVersion(version)
                 .WithOpenApi(opt => new(opt) { Description = "Check the liveness of this application", OperationId = "Health Liveness Check" });
 
@@ -59,7 +59,7 @@ namespace Digivance.Auth.Api.Endpoints
         public static Task<IResult> ReadyAsync(CancellationToken cancellationToken)
         {
             Log.Debug("Health ready check request");
-            return Task.FromResult(Results.Ok());
+            return Task.FromResult(Results.Ok("Ready!"));
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Digivance.Auth.Api.Endpoints
         public static Task<IResult> LivenessAsync(CancellationToken cancellationToken)
         {
             Log.Debug("Health live check request");
-            return Task.FromResult(Results.Ok());
+            return Task.FromResult(Results.Ok("I'm alive!"));
         }
     }
 }
