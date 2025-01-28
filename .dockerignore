@@ -1,0 +1,11 @@
+# Ignore node_modules everywhere
+node_modules
+**/node_modules
+
+# Ignore temporary files
+*.log
+*.tmp
+*.swp
+
+# Ignore specific directories
+digivance_auth/node_modules
