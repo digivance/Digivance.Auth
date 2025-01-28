@@ -7,5 +7,3 @@ node_modules
 *.tmp
 *.swp
 
-# Ignore specific directories
-digivance_auth/node_modules
