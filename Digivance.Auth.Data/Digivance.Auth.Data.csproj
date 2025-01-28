@@ -7,7 +7,6 @@
     <Version>0.1.0</Version>
     <Authors>dmayor, digivance</Authors>
     <Company>Digivance Technologies</Company>
-	   <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <PropertyGroup>
