@@ -1,12 +1,7 @@
 ﻿using Digivance.Auth.Data.EntityFramework.Entities;
 using Digivance.Data.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Digivance.Auth.Data.EntityFramework.Contexts
 {
@@ -15,9 +10,24 @@ namespace Digivance.Auth.Data.EntityFramework.Contexts
     /// </summary>
     public class AuthContext : DbContext
     {
+        /// <summary>
+        /// Permissions table
+        /// </summary>
         public DbSet<PermissionEntity> Permissions { get; set; }
+
+        /// <summary>
+        /// Role table
+        /// </summary>
         public DbSet<RoleEntity> Roles { get; set; }
+
+        /// <summary>
+        /// Tenant table
+        /// </summary>
         public DbSet<TenantEntity> Tenants { get; set; }
+
+        /// <summary>
+        /// UserAccounts table
+        /// </summary>
         public DbSet<UserAccountEntity> UserAccounts { get; set; }
 
         /// <summary>
@@ -67,8 +77,7 @@ namespace Digivance.Auth.Data.EntityFramework.Contexts
         {
             var baseEntries = ChangeTracker.Entries()
                 .Where(entry => entry.State == EntityState.Added || entry.State == EntityState.Modified)
-                .Where(entry => entry.Entity is BaseEntity)
-                .ToList();
+                .Where(entry => entry.Entity is BaseEntity);
 
             foreach (var entry in baseEntries)
             {

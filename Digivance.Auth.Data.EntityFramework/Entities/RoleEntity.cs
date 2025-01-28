@@ -1,10 +1,4 @@
 ﻿using Digivance.Data.EntityFramework.Entities;
-using Digivance.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Digivance.Auth.Data.EntityFramework.Entities
 {
@@ -16,7 +10,7 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// <summary>
         /// User friendly description of this permission
         /// </summary>
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Unique per scope name of this role

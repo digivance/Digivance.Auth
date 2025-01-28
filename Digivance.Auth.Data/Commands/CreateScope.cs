@@ -8,7 +8,7 @@
         /// <summary>
         /// Optional user friendly description of this scope
         /// </summary>
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Required unique per tenant name of this scope

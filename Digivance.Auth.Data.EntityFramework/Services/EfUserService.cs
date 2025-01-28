@@ -2,11 +2,6 @@
 using Digivance.Auth.Data.EntityFramework.Contexts;
 using Digivance.Auth.Data.Models;
 using Digivance.Auth.Data.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Digivance.Auth.Data.EntityFramework.Services
 {

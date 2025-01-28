@@ -8,7 +8,7 @@
         /// <summary>
         /// User friendly description of the role to create
         /// </summary>
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Required unique per scope name of this role

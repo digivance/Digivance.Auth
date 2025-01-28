@@ -10,7 +10,7 @@ namespace Digivance.Auth.Data.Models
         /// <summary>
         /// User friendly description of this scope
         /// </summary>
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// User friendly name of this scope
