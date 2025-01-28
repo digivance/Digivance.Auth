@@ -13,4 +13,8 @@
     <NoWarn>1701;1702;8618</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Digivance.Auth.Data\Digivance.Auth.Data.csproj" />
+  </ItemGroup>
+
 </Project>
