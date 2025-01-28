@@ -8,7 +8,7 @@
         /// <summary>
         /// Optional user friendly description to create this permission with
         /// </summary>
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Required unique per scope name for this permission

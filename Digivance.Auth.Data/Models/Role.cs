@@ -10,7 +10,7 @@ namespace Digivance.Auth.Data.Models
         /// <summary>
         /// User friendly description of this permission
         /// </summary>
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Unique per scope name of this role
