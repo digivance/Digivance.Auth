@@ -39,7 +39,7 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
 
         public Role ToModel(int? maxDepth = null, int currentDepth = 0)
         {
-            if (maxDepth.HasValue && currentDepth >= maxDepth.Value) return null;
+            if (maxDepth != null && currentDepth >= maxDepth.Value) return null;
 
             var role = ToBaseModel<Role>();
             role.Name = Name;

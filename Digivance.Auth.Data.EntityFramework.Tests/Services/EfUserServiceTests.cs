@@ -67,7 +67,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var service = scope.ServiceProvider.GetService<IUserService>();
             var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
 
-            var createdUser = await service.CreateUserAsync(new CreateUser
+            var createdUser = await service!.CreateAsync(new CreateUser
             {
                 DisplayName = "Test",
                 EmailAddress = "test@gmail.com",
@@ -76,10 +76,10 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                 TenantId = Guid.NewGuid()
             }, default);
 
-            var gettedUser = await service.GetUserByIdAsync(createdUser.Id, default);
+            var gettedUser = await service.GetByIdAsync(createdUser.Id, default);
 
             var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
-            authContext.UserAccounts.Remove(deleteMe);
+            authContext.UserAccounts.Remove(deleteMe!);
 
             Assert.That(createdUser, Is.Not.Null);
             Assert.That(gettedUser, Is.Not.Null);
@@ -93,7 +93,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
             var tenantId = Guid.NewGuid();
 
-            var createdUser = await service.CreateUserAsync(new CreateUser
+            var createdUser = await service!.CreateAsync(new CreateUser
             {
                 DisplayName = "Test",
                 EmailAddress = "test@gmail.com",
@@ -102,10 +102,10 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                 TenantId = tenantId
             }, default);
 
-            var gettedUser = await service.GetUserByEmailAddress(createdUser.EmailAddress, default);
+            var gettedUser = await service.GetByEmailAddress(createdUser.EmailAddress, default);
 
             var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
-            authContext.UserAccounts.Remove(deleteMe);
+            authContext.UserAccounts.Remove(deleteMe!);
 
             Assert.That(createdUser, Is.Not.Null);
             Assert.That(gettedUser, Is.Not.Null);
@@ -119,7 +119,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var service = scope.ServiceProvider.GetService<IUserService>();
             var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
 
-            var createdUser = await service.CreateUserAsync(new CreateUser
+            var createdUser = await service!.CreateAsync(new CreateUser
             {
                 DisplayName = "Test",
                 EmailAddress = "valid@email.com",
@@ -128,10 +128,10 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                 TenantId = Guid.NewGuid()
             }, default);
 
-            var exists = await service.EmailAddressTaken(address, default);
+            var exists = await service.EmailAddressExists(address, default);
 
             var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
-            authContext.UserAccounts.Remove(deleteMe);
+            authContext.UserAccounts.Remove(deleteMe!);
 
             Assert.That(createdUser, Is.Not.Null);
 

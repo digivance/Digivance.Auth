@@ -59,7 +59,7 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
 
         public UserAccount ToModel(int? maxDepth = 0, int currentDepth = 0)
         {
-            if (maxDepth.HasValue && currentDepth >= maxDepth.Value) return null;
+            if (maxDepth != null && currentDepth >= maxDepth.Value) return null;
 
             var user = ToBaseModel<UserAccount>();
             user.DisplayName = DisplayName;

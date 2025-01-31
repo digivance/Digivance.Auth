@@ -26,7 +26,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             this.db = dbContext;
         }
 
-        public async Task<UserAccount> CreateUserAsync(CreateUser command, CancellationToken cancellationToken)
+        public async Task<UserAccount> CreateAsync(CreateUser command, CancellationToken cancellationToken)
         {
             var userId = Guid.NewGuid();
 
@@ -45,18 +45,18 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             return user.ToModel(maxDepth:1);
         }
 
-        public Task DeleteUserByIdAsync(Guid userId, CancellationToken cancellationToken)
+        public Task DeleteByIdAsync(Guid userId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> EmailAddressTaken(string emailAddress, CancellationToken cancellationToken)
+        public async Task<bool> EmailAddressExists(string emailAddress, CancellationToken cancellationToken)
         {
-            var user = await db.UserAccounts
+            var isTaken = await db.UserAccounts
                 .Where(x => x.EmailAddress == emailAddress)
-                .FirstOrDefaultAsync();
+                .AnyAsync();
 
-            return (user != null);
+            return (isTaken);
         }
 
         public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
@@ -64,7 +64,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             throw new NotImplementedException();
         }
 
-        public async Task<UserAccount?> GetUserByEmailAddress(string emailAddress, CancellationToken cancellationToken)
+        public async Task<UserAccount?> GetByEmailAddress(string emailAddress, CancellationToken cancellationToken)
         {
             var user = await db.UserAccounts
                 .Where(x => x.EmailAddress == emailAddress)
@@ -78,12 +78,12 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             return user.ToModel(maxDepth:1);
         }
 
-        public Task<UserAccount?> GetUserByHandleAsync(string handle, CancellationToken cancellationToken)
+        public Task<UserAccount?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<UserAccount?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
+        public async Task<UserAccount?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
         {
             var user = await db.UserAccounts
                 .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
@@ -96,7 +96,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             return user.ToModel(maxDepth:1);
         }
 
-        public Task<UserAccount> UpdateUserAsync(Guid id, UpdateUser command, CancellationToken cancellationToken)
+        public Task<UserAccount> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
