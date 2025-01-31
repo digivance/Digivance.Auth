@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.EntityF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.Tests", "Digivance.Auth.Data.Tests\Digivance.Auth.Data.Tests.csproj", "{9A0D839C-FA66-4CC3-AF72-94BC0DC1A908}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.EntityFramework.Tests", "Digivance.Auth.Data.EntityFramework.Tests\Digivance.Auth.Data.EntityFramework.Tests.csproj", "{69C57573-8685-4499-B9DC-AC6F74E238CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{9A0D839C-FA66-4CC3-AF72-94BC0DC1A908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A0D839C-FA66-4CC3-AF72-94BC0DC1A908}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A0D839C-FA66-4CC3-AF72-94BC0DC1A908}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69C57573-8685-4499-B9DC-AC6F74E238CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C57573-8685-4499-B9DC-AC6F74E238CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69C57573-8685-4499-B9DC-AC6F74E238CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69C57573-8685-4499-B9DC-AC6F74E238CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,9 @@
 ﻿using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework.Contexts;
+using Digivance.Auth.Data.EntityFramework.Entities;
 using Digivance.Auth.Data.Models;
 using Digivance.Auth.Data.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Digivance.Auth.Data.EntityFramework.Services
 {
@@ -13,7 +15,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         /// <summary>
         /// Internally used AuthContext
         /// </summary>
-        private readonly AuthContext dbContext;
+        private readonly AuthContext db;
 
         /// <summary>
         /// Standard constructor
@@ -21,12 +23,26 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         /// <param name="dbContext">The AuthContext to use</param>
         public EfUserService(AuthContext dbContext)
         {
-            this.dbContext = dbContext;
+            this.db = dbContext;
         }
 
-        public Task<UserAccount> CreateUserAsync(CreateUser command, CancellationToken cancellationToken)
+        public async Task<UserAccount> CreateUserAsync(CreateUser command, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var userId = Guid.NewGuid();
+
+            var user = new UserAccountEntity
+            {
+                Id = userId,
+                EmailAddress = command.EmailAddress,
+                Password = command.Password,
+                TenantId = command.TenantId,
+                DisplayName = command.DisplayName,
+                Username = command.Username
+            };
+
+            db.UserAccounts.Add(user);
+            await db.SaveChangesAsync(cancellationToken);
+            return user.ToModel(maxDepth:1);
         }
 
         public Task DeleteUserByIdAsync(Guid userId, CancellationToken cancellationToken)
@@ -34,9 +50,13 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> EmailAddressTaken(string emailAddress, CancellationToken cancellationToken)
+        public async Task<bool> EmailAddressTaken(string emailAddress, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await db.UserAccounts
+                .Where(x => x.EmailAddress == emailAddress)
+                .FirstOrDefaultAsync();
+
+            return (user != null);
         }
 
         public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
@@ -44,9 +64,18 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             throw new NotImplementedException();
         }
 
-        public Task<UserAccount?> GetUserByEmailAddress(string emailAddress, CancellationToken cancellationToken)
+        public async Task<UserAccount?> GetUserByEmailAddress(string emailAddress, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await db.UserAccounts
+                .Where(x => x.EmailAddress == emailAddress)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            return user.ToModel(maxDepth:1);
         }
 
         public Task<UserAccount?> GetUserByHandleAsync(string handle, CancellationToken cancellationToken)
@@ -54,9 +83,17 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             throw new NotImplementedException();
         }
 
-        public Task<UserAccount?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
+        public async Task<UserAccount?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await db.UserAccounts
+                .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            return user.ToModel(maxDepth:1);
         }
 
         public Task<UserAccount> UpdateUserAsync(Guid id, UpdateUser command, CancellationToken cancellationToken)
