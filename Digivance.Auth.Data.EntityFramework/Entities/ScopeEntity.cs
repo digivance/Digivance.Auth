@@ -1,4 +1,7 @@
-﻿using Digivance.Data.EntityFramework.Entities;
+﻿using Digivance.Auth.Data.Models;
+using Digivance.Data.EntityFramework.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 
 namespace Digivance.Auth.Data.EntityFramework.Entities
 {
@@ -38,5 +41,52 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// is a child, always trust TenantId instead)
         /// </summary>
         public TenantEntity? Tenant { get; set; }
+
+        /// <summary>
+        /// Converts to Tenant model
+        /// </summary>
+        /// <param name="recursion">Stops recursing once BaseModel.RecursionLimit is hit</param>
+        /// <returns>Tenant model</returns>
+        public Scope ToModel(int? maxDepth = null, int currentDepth = 0)
+        {
+            if (maxDepth != null && currentDepth >= maxDepth.Value) return null;
+
+            var scope = ToBaseModel<Scope>();
+            scope.Name = Name;
+            scope.Description = Description;
+            scope.Permissions = Permissions?.Select(x => x.ToModel(maxDepth, currentDepth + 1)).ToList();
+            scope.Roles = Roles?.Select(r => r.ToModel(maxDepth, currentDepth + 1)).ToList();
+            scope.Tenant = Tenant?.ToModel(maxDepth, currentDepth + 1);
+
+            return scope;
+        }
+    }
+
+    /// <summary>
+    /// Entity framework configuration for our ScopeEntity
+    /// </summary>
+    public class ScopeEntityConfiguration : IEntityTypeConfiguration<ScopeEntity>
+    {
+        /// <summary>
+        /// Configures EF for our ScopeEntity
+        /// </summary>
+        /// <param name="builder">Builder to configure</param>
+        public void Configure(EntityTypeBuilder<ScopeEntity> builder)
+        {
+            builder.ConfigureBaseEntity();
+
+            builder.Property(x => x.Name)
+                .HasMaxLength(255)
+                .IsRequired(true);
+
+            builder.HasIndex(x => x.Name)
+                .IsUnique(true);
+
+            builder.HasMany(x => x.Roles)
+                .WithOne(x => x.Scope);
+
+            builder.HasMany(x => x.Permissions)
+                .WithOne(x => x.Scope);
+        }
     }
 }

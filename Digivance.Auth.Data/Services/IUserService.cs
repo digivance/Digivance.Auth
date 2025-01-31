@@ -14,7 +14,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="command">The create user command</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The created user profile</returns>
-        public Task<UserAccount> CreateUserAsync(CreateUser command, CancellationToken cancellationToken);
+        public Task<UserAccount> CreateAsync(CreateUser command, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes an existing user
@@ -22,7 +22,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="userId">Unique id of the user to delete</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Task to await</returns>
-        public Task DeleteUserByIdAsync(Guid userId, CancellationToken cancellationToken);
+        public Task DeleteByIdAsync(Guid userId, CancellationToken cancellationToken);
 
         /// <summary>
         /// Checks to see if this email address is already in use
@@ -30,7 +30,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="emailAddress">The email address to look for</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>True if email address is taken</returns>
-        public Task<bool> EmailAddressTaken(string emailAddress, CancellationToken cancellationToken);
+        public Task<bool> EmailAddressExistsAsync(string emailAddress, CancellationToken cancellationToken);
 
         /// <summary>
         /// Checks to see if this is a valid user id
@@ -47,15 +47,15 @@ namespace Digivance.Auth.Data.Services
         /// <param name="emailAddress">Email address of the user to get</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<UserAccount?> GetUserByEmailAddress(string emailAddress, CancellationToken cancellationToken);
+        public Task<UserAccount?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Returns a user account by it's handle
+        /// Returns a user account by it's username
         /// </summary>
-        /// <param name="handle">Unique handle of the user to get</param>
+        /// <param name="username">Unique username of the user to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>UserProfile if found or null</returns>
-        public Task<UserAccount?> GetUserByHandleAsync(string handle, CancellationToken cancellationToken);
+        public Task<UserAccount?> GetByUsernameAsync(string username, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a user account by it's id
@@ -63,7 +63,15 @@ namespace Digivance.Auth.Data.Services
         /// <param name="userId">Unique id of the user to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>UserProfile if found or null</returns>
-        public Task<UserAccount?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken);
+        public Task<UserAccount?> GetByIdAsync(Guid userId, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Checks to see if this username is already in use
+        /// </summary>
+        /// <param name="username">The username to look for</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>True if username is taken</returns>
+        public Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken);
 
         /// <summary>
         /// Update an existing user
@@ -71,6 +79,6 @@ namespace Digivance.Auth.Data.Services
         /// <param name="command">The update user command</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The updated UserProfile</returns>
-        public Task<UserAccount> UpdateUserAsync(Guid id, UpdateUser command, CancellationToken cancellationToken);
+        public Task<UserAccount> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken);
     }
 }

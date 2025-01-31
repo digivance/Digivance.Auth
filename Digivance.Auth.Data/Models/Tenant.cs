@@ -35,5 +35,7 @@ namespace Digivance.Auth.Data.Models
         /// a child)
         /// </summary>
         public ICollection<Scope>? Scopes { get; set; }
+
+        public ICollection<UserAccount>? UserAccounts { get; set; }
     }
 }
