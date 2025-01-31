@@ -102,7 +102,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                 TenantId = tenantId
             }, default);
 
-            var gettedUser = await service.GetByEmailAddress(createdUser.EmailAddress, default);
+            var gettedUser = await service.GetByEmailAddressAsync(createdUser.EmailAddress, default);
 
             var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
             authContext.UserAccounts.Remove(deleteMe!);
@@ -114,7 +114,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
         [TestCase("invalid-email@gmail.com", false)]
         [TestCase("valid@email.com", true)]
-        public async Task Can_IsEmailAddressTaken(string address, bool expectValid)
+        public async Task Can_EmailAddressExists(string address, bool expectValid)
         {
             var service = scope.ServiceProvider.GetService<IUserService>();
             var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
@@ -128,7 +128,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                 TenantId = Guid.NewGuid()
             }, default);
 
-            var exists = await service.EmailAddressExists(address, default);
+            var exists = await service.EmailAddressExistsAsync(address, default);
 
             var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
             authContext.UserAccounts.Remove(deleteMe!);
@@ -144,6 +144,66 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                 Assert.That(exists, Is.False);
             }
  
+        }
+
+        [Test]
+        public async Task Can_GetUserByUsername()
+        {
+            var service = scope.ServiceProvider.GetService<IUserService>();
+            var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
+            var tenantId = Guid.NewGuid();
+
+            var createdUser = await service!.CreateAsync(new CreateUser
+            {
+                DisplayName = "Test",
+                EmailAddress = "test@gmail.com",
+                Password = "@tesT123",
+                Username = "Test",
+                TenantId = tenantId
+            }, default);
+
+            var gettedUser = await service.GetByUsernameAsync(createdUser.Username, default);
+
+            var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
+            authContext.UserAccounts.Remove(deleteMe!);
+
+            Assert.That(createdUser, Is.Not.Null);
+            Assert.That(gettedUser, Is.Not.Null);
+            Assert.That(gettedUser, Is.EqualTo(createdUser));
+        }
+
+        [TestCase("Invalid", false)]
+        [TestCase("Valid", true)]
+        public async Task Can_UserNameExists(string username, bool expectValid)
+        {
+            var service = scope.ServiceProvider.GetService<IUserService>();
+            var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
+
+            var createdUser = await service!.CreateAsync(new CreateUser
+            {
+                DisplayName = "Test",
+                EmailAddress = "valid@email.com",
+                Password = "@tesT123",
+                Username = "Valid",
+                TenantId = Guid.NewGuid()
+            }, default);
+
+            var exists = await service.UsernameExistsAsync(username, default);
+
+            var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
+            authContext.UserAccounts.Remove(deleteMe!);
+
+            Assert.That(createdUser, Is.Not.Null);
+
+            if (expectValid)
+            {
+                Assert.That(exists, Is.True);
+            }
+            else
+            {
+                Assert.That(exists, Is.False);
+            }
+
         }
     }
 }

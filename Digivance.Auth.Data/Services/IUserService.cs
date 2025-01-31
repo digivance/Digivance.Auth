@@ -30,7 +30,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="emailAddress">The email address to look for</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>True if email address is taken</returns>
-        public Task<bool> EmailAddressExists(string emailAddress, CancellationToken cancellationToken);
+        public Task<bool> EmailAddressExistsAsync(string emailAddress, CancellationToken cancellationToken);
 
         /// <summary>
         /// Checks to see if this is a valid user id
@@ -47,7 +47,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="emailAddress">Email address of the user to get</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<UserAccount?> GetByEmailAddress(string emailAddress, CancellationToken cancellationToken);
+        public Task<UserAccount?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a user account by it's username
@@ -64,6 +64,14 @@ namespace Digivance.Auth.Data.Services
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>UserProfile if found or null</returns>
         public Task<UserAccount?> GetByIdAsync(Guid userId, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Checks to see if this username is already in use
+        /// </summary>
+        /// <param name="username">The username to look for</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>True if username is taken</returns>
+        public Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken);
 
         /// <summary>
         /// Update an existing user

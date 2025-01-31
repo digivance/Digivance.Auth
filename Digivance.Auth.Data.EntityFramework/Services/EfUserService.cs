@@ -4,6 +4,7 @@ using Digivance.Auth.Data.EntityFramework.Entities;
 using Digivance.Auth.Data.Models;
 using Digivance.Auth.Data.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 namespace Digivance.Auth.Data.EntityFramework.Services
 {
@@ -50,10 +51,19 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> EmailAddressExists(string emailAddress, CancellationToken cancellationToken)
+        public async Task<bool> EmailAddressExistsAsync(string emailAddress, CancellationToken cancellationToken)
         {
             var isTaken = await db.UserAccounts
                 .Where(x => x.EmailAddress == emailAddress)
+                .AnyAsync();
+
+            return (isTaken);
+        }
+
+        public async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken)
+        {
+            var isTaken = await db.UserAccounts
+                .Where(x => x.Username == username)
                 .AnyAsync();
 
             return (isTaken);
@@ -64,7 +74,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             throw new NotImplementedException();
         }
 
-        public async Task<UserAccount?> GetByEmailAddress(string emailAddress, CancellationToken cancellationToken)
+        public async Task<UserAccount?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken)
         {
             var user = await db.UserAccounts
                 .Where(x => x.EmailAddress == emailAddress)
@@ -78,9 +88,18 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             return user.ToModel(maxDepth:1);
         }
 
-        public Task<UserAccount?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
+        public async Task<UserAccount?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await db.UserAccounts
+                .Where(x => x.Username == username)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            return user.ToModel(maxDepth: 1);
         }
 
         public async Task<UserAccount?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)

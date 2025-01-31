@@ -20,7 +20,11 @@ namespace Digivance.Auth.Client.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> EmailAddressExists(string emailAddress, CancellationToken cancellationToken)
+        public Task<bool> EmailAddressExistsAsync(string emailAddress, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -30,7 +34,7 @@ namespace Digivance.Auth.Client.Services
             throw new NotImplementedException();
         }
 
-        public Task<UserAccount?> GetByEmailAddress(string emailAddress, CancellationToken cancellationToken)
+        public Task<UserAccount?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
