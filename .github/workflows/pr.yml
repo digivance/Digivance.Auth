@@ -33,3 +33,4 @@ jobs:
 
     - name: Test Assemblies
       run: dotnet test --verbosity normal
+
