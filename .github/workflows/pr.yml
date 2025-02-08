@@ -25,7 +25,9 @@ jobs:
         service_principal: ${{ secrets.ACR_PRINCIPAL }}
         service_principal_password: ${{ secrets.ACR_PASSWORD }}
         tenant: ${{ secrets.ACR_TENANT }}
-        registry: ${{ secrets.ACR_NAME }}
-        repository: ${{ secrets.ACR_REPO }}:v${{ env.PACKAGE_VERSION }}
+        registry: ${{ secrets.ACR_REGISTRY }}
+        repository: ${{ secrets.ACR_REPOSITORY }}
+        image: api-dev
+        tag: ${{ env.PACKAGE_VERSION }}
         dockerfile: ./docker/api/dockerfile
         branch: ${{ github.ref }}
