@@ -27,7 +27,6 @@ jobs:
         tenant: ${{ secrets.ACR_TENANT }}
         registry: ${{ secrets.ACR_REGISTRY }}
         repository: ${{ secrets.ACR_REPOSITORY }}
-        image: api-dev
         tag: ${{ env.PACKAGE_VERSION }}
         dockerfile: ./docker/api/dockerfile
         branch: ${{ github.ref }}
