@@ -1,34 +1,31 @@
 # Stage 1: Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
-# Copy the entire solution
-COPY ./ /src
+# Copy solution file and src folder to our build folder
+COPY ./Digivance.Auth.sln /build/
+COPY ./src /build/src/
 
 # Install Node.js, pnpm, and Vite
 RUN apt update && \
     apt install -y nodejs npm && \
-    npm install -g pnpm vite && \
-    # Navigate to the frontend app directory and build it
-    cd /src/digivance_auth/app && \
+    npm install -g pnpm vite
+
+# Navigate to the frontend app directory and build it
+RUN cd /build/src/digivance_auth/app && \
     pnpm install && \
     pnpm run build
 
-# Publish the .NET application to a clean output directory
-RUN dotnet publish /src/Digivance.Auth.Api/Digivance.Auth.Api.csproj -c Release -o /app
+# Publish Digivance.Auth.Api to /app using release configuration
+RUN dotnet publish /build/src/Digivance.Auth.Api/Digivance.Auth.Api.csproj -c Release -o /app
 
-# Stage 2: Final Stage
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
-
-# Environment variable for ASP.NET Core
-ENV ASPNETCORE_HTTP_PORTS=5000
-
-# Expose the HTTP port
-EXPOSE 5000
-
-WORKDIR /app
+# Stage 2: Runtime Stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 
 # Copy only the published files from the build stage
-COPY --from=build /app .
+COPY --from=build /app /app
 
-# Set the entry point for the application
+# Expose port and launch app!
+ENV ASPNETCORE_HTTP_PORTS=5000
+EXPOSE 5000
+WORKDIR /app
 ENTRYPOINT [ "dotnet", "/app/Digivance.Auth.Api.dll" ]

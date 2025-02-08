@@ -23,7 +23,7 @@ jobs:
       run: npm install -g pnpm vite
 
     - name: Build UI
-      run: cd ./digivance_auth/app && pnpm run build
+      run: cd ./src/digivance_auth/app && pnpm run build
 
     - name: Restore dependencies
       run: dotnet restore
