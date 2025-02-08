@@ -24,5 +24,6 @@ jobs:
       uses: azure/container-apps-deploy-action@v1
       with:
         acrName: ${{ secrets.ACR_REGISTRY }}
-        containerAppName: auth-api-beta
+        containerAppName: ${{ secrets.ACA_NAME }}-beta
         resourceGroup: ${{ secrets.AZURE_RG }}
+        imageToDeploy: ${{ secrets.ACR_REGISTRY }}.azurecr.io/${{ secrets.ACR_REPOSITORY }}:${{ env.PACKAGE_VERSION }}
