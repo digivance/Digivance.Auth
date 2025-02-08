@@ -31,7 +31,7 @@ jobs:
         repository: ${{ secrets.ACR_REPOSITORY }}
         tag: ${{ env.PACKAGE_VERSION }}
         dockerfile: ./docker/api/dockerfile
-        branch: ${{ github.ref }}
+        branch: dev
         
     - name: Log in to Azure
       uses: azure/login@v1
