@@ -30,3 +30,15 @@ jobs:
         tag: ${{ env.PACKAGE_VERSION }}
         dockerfile: ./docker/api/dockerfile
         branch: ${{ github.ref }}
+
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Upgrade Container App
+      uses: azure/container-apps-deploy-action@v1
+      with:
+        acrName: ${{ secrets.ACR_REGISTRY }}
+        containerAppName: auth-api-beta
+        resourceGroup: ${{ secrets.AZURE_RG }}
