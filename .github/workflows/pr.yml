@@ -13,23 +13,7 @@ jobs:
       env:
         RUN_NUMBER: ${{ github.run_number }}
       run: >
-        project_version=$(grep '<Version>' < ./src/Digivance.Auth.Api/Digivance.Auth.Api.csproj | sed 's/.*<Version>\(.*\)<\/Version>/\1/') &&
-        echo "PROJECT_VERSION=${project_version//[$'\t\r\n']}" >> $GITHUB_ENV &&
-
-        package_version="${project_version}-pre.${RUN_NUMBER}" &&
-        echo "PACKAGE_VERSION=${package_version//[$'\t\r\n']}" >> $GITHUB_ENV
-
-    - name: ACR Build
-      uses: azure/acr-build@v1
-      with:
-        service_principal: ${{ secrets.ACR_PRINCIPAL }}
-        service_principal_password: ${{ secrets.ACR_PASSWORD }}
-        tenant: ${{ secrets.ACR_TENANT }}
-        registry: ${{ secrets.ACR_REGISTRY }}
-        repository: ${{ secrets.ACR_REPOSITORY }}
-        tag: ${{ env.PACKAGE_VERSION }}
-        dockerfile: ./docker/api/dockerfile
-        branch: ${{ github.ref }}
+        echo "PACKAGE_VERSION=0.1.0-pre.30" >> $GITHUB_ENV
 
     - name: Log in to Azure
       uses: azure/login@v1
