@@ -1,14 +1,14 @@
 # Stage 1: Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
-# Copy solution file and src folder to our build folder
-COPY ./Digivance.Auth.sln /build/
-COPY ./src /build/src/
-
 # Install Node.js, pnpm, and Vite
 RUN apt update && \
     apt install -y nodejs npm && \
     npm install -g pnpm vite
+
+# Copy solution file and src folder to our build folder
+COPY ./Digivance.Auth.sln /build/
+COPY ./src /build/src/
 
 # Navigate to the frontend app directory and build it
 RUN cd /build/src/digivance_auth/app && \

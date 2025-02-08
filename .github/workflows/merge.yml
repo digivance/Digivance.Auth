@@ -1,0 +1,34 @@
+name: Deploy Pipeline
+on:
+  pull_request:
+    branches: [ "dev" ]
+    types:
+      - closed
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Get package version
+      env:
+        RUN_NUMBER: ${{ github.run_number }}
+      run: >
+        project_version=$(grep '<Version>' < .src/Digivance.Auth.Api/Digivance.Auth.Api.csproj | sed 's/.*<Version>\(.*\)<\/Version>/\1/') &&
+        echo "PROJECT_VERSION=${project_version//[$'\t\r\n']}" >> $GITHUB_ENV &&
+
+        package_version="${project_version}-pre.${RUN_NUMBER}" &&
+        echo "PACKAGE_VERSION=${package_version//[$'\t\r\n']}" >> $GITHUB_ENV
+
+    - name: ACR Build
+      uses: azure/acr-build@v1
+      with:
+        service_principal: ${{ secrets.ACR_PRINCIPAL }}
+        service_principal_password: ${{ secrets.ACR_PASSWORD }}
+        tenant: ${{ secrets.ACR_TENANT }}
+        registry: ${{ secrets.ACR_NAME }}
+        repository: ${{ secrets.ACR_REPO }}
+        image: ${{ secrets.ACR_REPO }}
+        tag: ${{ env.PACKAGE_VERSION }}
+        dockerfille: ./docker/api/dockerfile
