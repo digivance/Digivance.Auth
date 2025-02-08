@@ -38,7 +38,7 @@ jobs:
       env:
         RUN_NUMBER: ${{ github.run_number }}
       run: >
-        project_version=$(grep '<Version>' < .src/Digivance.Auth.Api/Digivance.Auth.Api.csproj | sed 's/.*<Version>\(.*\)<\/Version>/\1/') &&
+        project_version=$(grep '<Version>' < ./src/Digivance.Auth.Api/Digivance.Auth.Api.csproj | sed 's/.*<Version>\(.*\)<\/Version>/\1/') &&
         echo "PROJECT_VERSION=${project_version//[$'\t\r\n']}" >> $GITHUB_ENV &&
 
         package_version="${project_version}-pre.${RUN_NUMBER}" &&
@@ -54,4 +54,4 @@ jobs:
         repository: ${{ secrets.ACR_REPO }}
         image: ${{ secrets.ACR_REPO }}
         tag: ${{ env.PACKAGE_VERSION }}
-        dockerfille: ./docker/api/dockerfile
+        dockerfile: ./docker/api/dockerfile
