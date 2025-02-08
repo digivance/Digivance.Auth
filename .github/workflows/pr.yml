@@ -26,7 +26,7 @@ jobs:
         service_principal_password: ${{ secrets.ACR_PASSWORD }}
         tenant: ${{ secrets.ACR_TENANT }}
         registry: ${{ secrets.ACR_NAME }}
-        repository: ${{ secrets.ACR_REPO }}
+        repository: 
         image: ${{ secrets.ACR_REPO }}
         tag: ${{ env.PACKAGE_VERSION }}
         dockerfile: ./docker/api/dockerfile
