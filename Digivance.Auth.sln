@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data", "Digivance.Auth.Data\Digivance.Auth.Data.csproj", "{7F929109-9733-4E05-865D-5B0F27E19DC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data", "src\Digivance.Auth.Data\Digivance.Auth.Data.csproj", "{7F929109-9733-4E05-865D-5B0F27E19DC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Client", "Digivance.Auth.Client\Digivance.Auth.Client.csproj", "{B4F26F4E-513E-4925-853B-A7BDE4F478CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Client", "src\Digivance.Auth.Client\Digivance.Auth.Client.csproj", "{B4F26F4E-513E-4925-853B-A7BDE4F478CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Api", "Digivance.Auth.Api\Digivance.Auth.Api.csproj", "{BD255719-BECE-4E55-9887-C30AF119BCA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Api", "src\Digivance.Auth.Api\Digivance.Auth.Api.csproj", "{BD255719-BECE-4E55-9887-C30AF119BCA6}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "digivance_auth", "digivance_auth\digivance_auth.esproj", "{DD64E76E-58C6-4D13-A397-A596C07620E7}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "digivance_auth", "src\digivance_auth\digivance_auth.esproj", "{DD64E76E-58C6-4D13-A397-A596C07620E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.EntityFramework", "Digivance.Auth.Data.EntityFramework\Digivance.Auth.Data.EntityFramework.csproj", "{DE1DC1FF-B49A-4EA3-9071-47E70EB76A7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.EntityFramework", "src\Digivance.Auth.Data.EntityFramework\Digivance.Auth.Data.EntityFramework.csproj", "{DE1DC1FF-B49A-4EA3-9071-47E70EB76A7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.Tests", "Digivance.Auth.Data.Tests\Digivance.Auth.Data.Tests.csproj", "{9A0D839C-FA66-4CC3-AF72-94BC0DC1A908}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.Tests", "src\Digivance.Auth.Data.Tests\Digivance.Auth.Data.Tests.csproj", "{9A0D839C-FA66-4CC3-AF72-94BC0DC1A908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.EntityFramework.Tests", "Digivance.Auth.Data.EntityFramework.Tests\Digivance.Auth.Data.EntityFramework.Tests.csproj", "{69C57573-8685-4499-B9DC-AC6F74E238CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.EntityFramework.Tests", "src\Digivance.Auth.Data.EntityFramework.Tests\Digivance.Auth.Data.EntityFramework.Tests.csproj", "{69C57573-8685-4499-B9DC-AC6F74E238CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
