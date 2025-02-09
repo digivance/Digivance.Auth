@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.1" />

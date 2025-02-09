@@ -3,13 +3,14 @@ using Digivance.Data.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using AutoMapper;
 
 namespace Digivance.Auth.Data.EntityFramework.Entities
 {
     /// <summary>
     /// Represents a user account / identity
     /// </summary>
-    public record UserAccountEntity : BaseEntity
+    public record UserEntity : BaseEntity
     {
         /// <summary>
         /// Optional display name that the user can choose to identify themselves as
@@ -38,15 +39,19 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         public byte[] Password { get; set; }
 
         /// <summary>
-        /// Roles this user is assigned to
+        /// Relations explaining permissions explicitly granted to this user
         /// </summary>
-        public ICollection<RolePermissionEntity>? RolePermissions { get; set; }
+        public ICollection<UserPermissionEntity> Permissions { get; set; }
 
         /// <summary>
-        /// The tenant that this user account exists in (may not be set when useraccount is
-        /// a child entity)
+        /// Relations explaining roles this user is assigned
         /// </summary>
-        public TenantEntity? Tenant { get; set; }
+        public ICollection<UserRoleEntity> Roles { get; set; }
+
+        /// <summary>
+        /// The tenant that this user account exists in
+        /// </summary>
+        public TenantEntity Tenant { get; set; }
 
         /// <summary>
         /// Unique id of the tenant that this user account exists in
@@ -57,40 +62,18 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// Optional, unique per tenant if provided, custom username of this user account
         /// </summary>
         public string Username { get; set; }
-
-        /// <summary>
-        /// Converts this entity to a standard DTO model
-        /// </summary>
-        /// <param name="maxDepth">Because entity framework, we may need to limit serialization loops</param>
-        /// <param name="currentDepth">Used to track recursion</param>
-        /// <returns>UserAccount DTO Model</returns>
-        public UserAccount ToModel(int? maxDepth = 0, int currentDepth = 0)
-        {
-            if (maxDepth != null && currentDepth >= maxDepth.Value) return null;
-
-            var user = ToBaseModel<UserAccount>();
-            user.DisplayName = DisplayName;
-            user.EmailAddress = EmailAddress;
-            user.EmailVerifiedOn = EmailVerifiedOn;
-            user.IsEmailVerified = IsEmailVerified;
-            user.Tenant = Tenant?.ToModel(maxDepth, currentDepth +1);
-            user.TenantId = TenantId;
-            user.Username = Username;
-
-            return user;
-        }
     }
 
     /// <summary>
     /// Entity type configuration for our UserProfileEntity
     /// </summary>
-    public class UserProfileEntityConfiguration : IEntityTypeConfiguration<UserAccountEntity>
+    public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         /// <summary>
-        /// Configures ef for our UserProfileEntity
+        /// Configures ef for our UserEntity
         /// </summary>
         /// <param name="builder">The builder to configure</param>
-        public void Configure(EntityTypeBuilder<UserAccountEntity> builder)
+        public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
             builder.ConfigureBaseEntity();
 
@@ -106,16 +89,44 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
                 .IsUnique(true);
 
             builder.Property(x => x.IsEmailVerified)
-                .HasDefaultValue(false)
+                .HasDefaultValue(false) // It does have a value... of false
                 .IsRequired(true);
 
             builder.Property(x => x.Password)
                 .HasMaxLength(512);
 
+            builder.HasMany(x => x.Permissions)
+                .WithOne(x => x.User);
+
+            builder.HasMany(x => x.Roles)
+                .WithOne(x => x.User);
+
             builder.HasOne(x => x.Tenant)
                 .WithMany(x => x.UserAccounts);
+
+            builder.Property(x => x.Username)
+                .HasMaxLength(100)
+                .IsRequired(false);
+
+            builder.HasIndex(x => new { x.TenantId, x.Username })
+                .IsUnique(true);
         }
     }
 
+    /// <summary>
+    /// User entity mapper configuration
+    /// </summary>
+    public class UserMapperConfiguration : IEntityMapperConfiguration
+    {
+        /// <summary>
+        /// Configures automapper for UserEntity -> User DTO
+        /// </summary>
+        /// <param name="cfg">The configuration builder to use</param>
+        public void Configure(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<UserEntity, User>()
+                .PreserveReferences();
+        }
+    }
 
 }

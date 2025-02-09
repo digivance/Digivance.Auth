@@ -10,7 +10,7 @@ namespace Digivance.Auth.Client.Services
     /// </summary>
     public class HttpUserService : IUserService
     {
-        public Task<UserAccount> CreateAsync(CreateUser command, CancellationToken cancellationToken)
+        public Task<User> CreateAsync(CreateUser command, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -20,36 +20,37 @@ namespace Digivance.Auth.Client.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> EmailAddressExistsAsync(string emailAddress, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserAccount?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken)
+        public Task<bool> ExistsByEmailAsync(string emailAddress, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserAccount?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
+        public Task<bool> ExistsByUsernameAsync(Guid tenantId, string username, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserAccount?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
+        public Task<User?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserAccount> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken)
+        public Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User?> GetByUsernameAsync(Guid tenantId, string username, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User?> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

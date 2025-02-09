@@ -14,7 +14,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="command">The create user command</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The created user profile</returns>
-        public Task<UserAccount> CreateAsync(CreateUser command, CancellationToken cancellationToken);
+        public Task<User> CreateAsync(CreateUser command, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes an existing user
@@ -25,14 +25,6 @@ namespace Digivance.Auth.Data.Services
         public Task DeleteByIdAsync(Guid userId, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Checks to see if this email address is already in use
-        /// </summary>
-        /// <param name="emailAddress">The email address to look for</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>True if email address is taken</returns>
-        public Task<bool> EmailAddressExistsAsync(string emailAddress, CancellationToken cancellationToken);
-
-        /// <summary>
         /// Checks to see if this is a valid user id
         /// </summary>
         /// <param name="id">Unique id of the user to check for</param>
@@ -40,6 +32,22 @@ namespace Digivance.Auth.Data.Services
         /// <returns>True if there is a user by this id</returns>
         public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Checks to see if this email address is already in use
+        /// </summary>
+        /// <param name="emailAddress">The email address to look for</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>True if email address is taken</returns>
+        public Task<bool> ExistsByEmailAsync(string emailAddress, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Checks to see if a user exists by provided tenant id and username
+        /// </summary>
+        /// <param name="tenantId">The tenant id to look for a user in</param>
+        /// <param name="username">The unique (per tenant) username to look for</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>True if there is a user in this tenant with this username</returns>
+        public Task<bool> ExistsByUsernameAsync(Guid tenantId, string username, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a user account by email address
@@ -47,15 +55,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="emailAddress">Email address of the user to get</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<UserAccount?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Returns a user account by it's username
-        /// </summary>
-        /// <param name="username">Unique username of the user to get</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>UserProfile if found or null</returns>
-        public Task<UserAccount?> GetByUsernameAsync(string username, CancellationToken cancellationToken);
+        public Task<User?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a user account by it's id
@@ -63,15 +63,16 @@ namespace Digivance.Auth.Data.Services
         /// <param name="userId">Unique id of the user to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>UserProfile if found or null</returns>
-        public Task<UserAccount?> GetByIdAsync(Guid userId, CancellationToken cancellationToken);
+        public Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Checks to see if this username is already in use
+        /// Returns a user account by it's username
         /// </summary>
-        /// <param name="username">The username to look for</param>
+        /// <param name="tenantId">Unique id of the tenant to get user from</param>
+        /// <param name="username">Unique username of the user to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>True if username is taken</returns>
-        public Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken);
+        /// <returns>UserProfile if found or null</returns>
+        public Task<User?> GetByUsernameAsync(Guid tenantId, string username, CancellationToken cancellationToken);
 
         /// <summary>
         /// Update an existing user
@@ -79,6 +80,6 @@ namespace Digivance.Auth.Data.Services
         /// <param name="command">The update user command</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The updated UserProfile</returns>
-        public Task<UserAccount> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken);
+        public Task<User?> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken);
     }
 }

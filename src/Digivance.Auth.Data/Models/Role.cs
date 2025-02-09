@@ -31,5 +31,15 @@ namespace Digivance.Auth.Data.Models
         /// Unique id of the scope that this role exists in
         /// </summary>
         public Guid ScopeId { get; set; }
+
+        /// <summary>
+        /// The tenant this role belongs to
+        /// </summary>
+        public Tenant Tenant { get; set; }
+
+        /// <summary>
+        /// Unique id of the tenant this role belongs to
+        /// </summary>
+        public Guid TenantId { get; set; }
     }
 }

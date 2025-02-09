@@ -1,209 +1,260 @@
 ﻿using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework.Contexts;
 using Digivance.Auth.Data.EntityFramework.Services;
-using Digivance.Auth.Data.Models;
-using Digivance.Auth.Data.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using static System.Net.Mime.MediaTypeNames;
-
 
 namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 {
     [TestFixture]
     public class EfUserServiceTests
     {
-        private AsyncServiceScope scope;
-        private ServiceProvider provider;
+        private AuthContext context;
+        private EfUserService service;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            var services = new ServiceCollection();
+            var mapper = new EntityMapper();
 
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile("appsettings.Test.json")
-                .Build();
+            var options = new DbContextOptionsBuilder<AuthContext>()
+                .UseInMemoryDatabase("EFUserServiceTests")
+                .Options;
 
-            // This tries to fetch a connection string (which isn’t needed for in-memory DBs).
-            // In reality, all you need is a simple string name, not a full connection string.
-            var authDbName = configuration.GetConnectionString("AuthContext") ??
-                throw new ArgumentNullException("Missing AuthContext app setting");
-
-            services
-                .AddDbContext<AuthContext>(x =>
-                    x.UseInMemoryDatabase(authDbName)
-                );
-
-            //Register service
-            services.AddScoped<IUserService, EfUserService>();
-            services.AddScoped<ITenantService, EfTenantService>();
-
-            provider = services.BuildServiceProvider();
-            scope = provider.CreateAsyncScope();
+            context = new AuthContext(options);
+            service = new EfUserService(context, mapper);
         }
 
         [OneTimeTearDown]
-        public async Task OneTimeTearDown()
+        public void OneTimeTearDown()
         {
-            await scope.DisposeAsync();
-            await provider.DisposeAsync();
+            if (context != null)
+                context.Dispose();
+        }
+
+        [TestCase("Test User", "valid@address.com", "password", "testuser")]
+        public async Task Can_CreateAsync(string displayName, string emailAddress, string password, string username)
+        {
+            var start = DateTime.UtcNow;
+            var command = new CreateUser
+            {
+                DisplayName = displayName,
+                EmailAddress = emailAddress,
+                Password = password,
+                Username = username
+            };
+
+            // Create and delete our user, we can still Assert expectations against newUser below
+            var newUser = await service.CreateAsync(command, default);
+            await service.DeleteByIdAsync(newUser.Id, default);
+
+            Assert.Multiple(() =>
+            {
+                // Stuff we expect EF / DB did...
+                Assert.That(newUser.CreatedOn, Is.GreaterThanOrEqualTo(start));
+                Assert.That(newUser.CreatedOn, Is.LessThanOrEqualTo(DateTime.UtcNow));
+                Assert.That(newUser.Id, Is.Not.EqualTo(new Guid()));
+
+                // Stuff we expect got persisted correctly
+                Assert.That(newUser.DisplayName, Is.EqualTo(displayName));
+                Assert.That(newUser.EmailAddress, Is.EqualTo(emailAddress));
+                Assert.That(newUser.IsEmailVerified, Is.False);
+                Assert.That(newUser.Username, Is.EqualTo(username));
+            });
+        }
+
+        [Test]
+        public async Task Can_DeleteByIdAsync()
+        {
+            var command = new CreateUser
+            {
+                DisplayName = "",
+                EmailAddress = "email@address.com",
+                Password = "password",
+                Username = "username"
+            };
+
+            var newUser = await service.CreateAsync(command, default);
+            await service.DeleteByIdAsync(newUser.Id, default);
+            var deletedUser = await service.GetByIdAsync(newUser.Id, default);
+
+            Assert.That(deletedUser, Is.Null);
+        }
+
+        [Test]
+        public async Task Can_ExistsAsync()
+        {
+            var command = new CreateUser
+            {
+                DisplayName = "",
+                EmailAddress = "email@address.com",
+                Password = "password",
+                Username = "username"
+            };
+
+            var newUser = await service.CreateAsync(command, default);
+            var exists = await service.ExistsAsync(newUser.Id, default);
+            await service.DeleteByIdAsync(newUser.Id, default);
+
+            Assert.That(exists, Is.True);
+        }
+
+        [Test]
+        public async Task Can_ExistsByEmailAsync()
+        {
+            var command = new CreateUser
+            {
+                DisplayName = "",
+                EmailAddress = "email@address.com",
+                Password = "password",
+                Username = "username"
+            };
+
+            var newUser = await service.CreateAsync(command, default);
+            var exists = await service.ExistsByEmailAsync(newUser.EmailAddress, default);
+            await service.DeleteByIdAsync(newUser.Id, default);
+
+            Assert.That(exists, Is.True);
+        }
+
+        [Test]
+        public async Task Can_ExistsByUsernameAsync()
+        {
+            var command = new CreateUser
+            {
+                DisplayName = "",
+                EmailAddress = "email@address.com",
+                Password = "password",
+                Username = "username"
+            };
+
+            var newUser = await service.CreateAsync(command, default);
+            var exists = await service.ExistsByUsernameAsync(newUser.TenantId, newUser.Username, default);
+            await service.DeleteByIdAsync(newUser.Id, default);
+
+            Assert.That(exists, Is.True);
+        }
+
+        [Test]
+        public async Task Can_GetByEmail()
+        {
+            var command = new CreateUser
+            {
+                DisplayName = "",
+                EmailAddress = "email@address.com",
+                Password = "password",
+                Username = "username"
+            };
+
+            var newUser = await service.CreateAsync(command, default);
+            var model = await service.GetByEmailAddressAsync(newUser.EmailAddress, default);
+            await service.DeleteByIdAsync(newUser.Id, default);
+
+            Assert.That(model, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(newUser.CreatedOn, Is.EqualTo(model.CreatedOn));
+                Assert.That(newUser.Id, Is.EqualTo(model.Id));
+
+                Assert.That(newUser.DisplayName, Is.EqualTo(model.DisplayName));
+                Assert.That(newUser.EmailAddress, Is.EqualTo(model.EmailAddress));
+                Assert.That(newUser.IsEmailVerified, Is.False);
+                Assert.That(newUser.Username, Is.EqualTo(model.Username));
+            });
         }
 
         [Test]
         public async Task Can_GetById()
         {
-            var service = scope.ServiceProvider.GetService<IUserService>();
-            var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
-
-            var createdUser = await service!.CreateAsync(new CreateUser
+            var command = new CreateUser
             {
-                DisplayName = "Test",
-                EmailAddress = "test@gmail.com",
-                Password = "@tesT123",
-                Username = "Test",
-                TenantId = Guid.NewGuid()
-            }, default);
+                DisplayName = "",
+                EmailAddress = "email@address.com",
+                Password = "password",
+                Username = "username"
+            };
 
-            var gettedUser = await service.GetByIdAsync(createdUser.Id, default);
+            var newUser = await service.CreateAsync(command, default);
+            var model = await service.GetByIdAsync(newUser.Id, default);
+            await service.DeleteByIdAsync(newUser.Id, default);
 
-            var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
-            authContext.UserAccounts.Remove(deleteMe!);
+            Assert.That(model, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(newUser.CreatedOn, Is.EqualTo(model.CreatedOn));
+                Assert.That(newUser.Id, Is.EqualTo(model.Id));
 
-            Assert.That(createdUser, Is.Not.Null);
-            Assert.That(gettedUser, Is.Not.Null);
-            Assert.That(gettedUser, Is.EqualTo(createdUser));
+                Assert.That(newUser.DisplayName, Is.EqualTo(model.DisplayName));
+                Assert.That(newUser.EmailAddress, Is.EqualTo(model.EmailAddress));
+                Assert.That(newUser.IsEmailVerified, Is.False);
+                Assert.That(newUser.Username, Is.EqualTo(model.Username));
+            });
         }
 
         [Test]
-        public async Task Can_GetUserByEmail()
+        public async Task Can_GetByUsername()
         {
-            var service = scope.ServiceProvider.GetService<IUserService>();
-            var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
-            var tenantId = Guid.NewGuid();
-
-            var createdUser = await service!.CreateAsync(new CreateUser
+            var command = new CreateUser
             {
-                DisplayName = "Test",
-                EmailAddress = "test@gmail.com",
-                Password = "@tesT123",
-                Username = "Test",
-                TenantId = tenantId
-            }, default);
+                DisplayName = "",
+                EmailAddress = "email@address.com",
+                Password = "password",
+                Username = "username"
+            };
 
-            var gettedUser = await service.GetByEmailAddressAsync(createdUser.EmailAddress, default);
+            var newUser = await service.CreateAsync(command, default);
+            var model = await service.GetByUsernameAsync(newUser.TenantId, newUser.Username, default);
+            await service.DeleteByIdAsync(newUser.Id, default);
 
-            var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
-            authContext.UserAccounts.Remove(deleteMe!);
-
-            Assert.That(createdUser, Is.Not.Null);
-            Assert.That(gettedUser, Is.Not.Null);
-            Assert.That(gettedUser, Is.EqualTo(createdUser));
-        }
-
-        [TestCase("invalid-email@gmail.com", false)]
-        [TestCase("valid@email.com", true)]
-        public async Task Can_EmailAddressExists(string address, bool expectValid)
-        {
-            var service = scope.ServiceProvider.GetService<IUserService>();
-            var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
-
-            var createdUser = await service!.CreateAsync(new CreateUser
+            Assert.That(model, Is.Not.Null);
+            Assert.Multiple(() =>
             {
-                DisplayName = "Test",
-                EmailAddress = "valid@email.com",
-                Password = "@tesT123",
-                Username = "Test",
-                TenantId = Guid.NewGuid()
-            }, default);
+                Assert.That(newUser.CreatedOn, Is.EqualTo(model.CreatedOn));
+                Assert.That(newUser.Id, Is.EqualTo(model.Id));
 
-            var exists = await service.EmailAddressExistsAsync(address, default);
-
-            var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
-            authContext.UserAccounts.Remove(deleteMe!);
-
-            Assert.That(createdUser, Is.Not.Null);
-
-            if (expectValid)
-            {
-                Assert.That(exists, Is.True);
-            }
-            else
-            {
-                Assert.That(exists, Is.False);
-            }
- 
+                Assert.That(newUser.DisplayName, Is.EqualTo(model.DisplayName));
+                Assert.That(newUser.EmailAddress, Is.EqualTo(model.EmailAddress));
+                Assert.That(newUser.IsEmailVerified, Is.False);
+                Assert.That(newUser.Username, Is.EqualTo(model.Username));
+            });
         }
 
         [Test]
-        public async Task Can_GetUserByUsername()
+        public async Task Can_Update()
         {
-            var service = scope.ServiceProvider.GetService<IUserService>();
-            var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
-            var tenantId = Guid.NewGuid();
-
-            var createdUser = await service!.CreateAsync(new CreateUser
+            var createCommand = new CreateUser
             {
-                DisplayName = "Test",
-                EmailAddress = "test@gmail.com",
-                Password = "@tesT123",
-                Username = "Test",
-                TenantId = tenantId
-            }, default);
+                DisplayName = "",
+                EmailAddress = "email@address.com",
+                Password = "password",
+                Username = "username"
+            };
 
-            var gettedUser = await service.GetByUsernameAsync(createdUser.Username, default);
+            var newUser = await service.CreateAsync(createCommand, default);
 
-            var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
-            authContext.UserAccounts.Remove(deleteMe!);
-
-            Assert.That(createdUser, Is.Not.Null);
-            Assert.That(gettedUser, Is.Not.Null);
-            Assert.That(gettedUser, Is.EqualTo(createdUser));
-        }
-
-        [TestCase("Invalid", false)]
-        [TestCase("Valid", true)]
-        public async Task Can_UserNameExists(string username, bool expectValid)
-        {
-            var service = scope.ServiceProvider.GetService<IUserService>();
-            var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
-
-            var createdUser = await service!.CreateAsync(new CreateUser
+            var updateCommand = new UpdateUser
             {
-                DisplayName = "Test",
-                EmailAddress = "valid@email.com",
-                Password = "@tesT123",
-                Username = "Valid",
-                TenantId = Guid.NewGuid()
-            }, default);
+                DisplayName = "New Display Name",
+                Username = "NewUsername"
+            };
 
-            var exists = await service.UsernameExistsAsync(username, default);
+            var updatedUser = await service.UpdateAsync(newUser.Id, updateCommand, default);
+            await service.DeleteByIdAsync(newUser.Id, default);
 
-            var deleteMe = await authContext.UserAccounts.FirstOrDefaultAsync(x => x.Id == createdUser.Id);
-            authContext.UserAccounts.Remove(deleteMe!);
-
-            Assert.That(createdUser, Is.Not.Null);
-
-            if (expectValid)
+            Assert.Multiple(() =>
             {
-                Assert.That(exists, Is.True);
-            }
-            else
-            {
-                Assert.That(exists, Is.False);
-            }
+                Assert.That(newUser, Is.Not.Null);
+                Assert.That(updatedUser, Is.Not.Null);
+            });
 
+            Assert.Multiple(() =>
+            {
+                Assert.That(newUser.DisplayName, Is.EqualTo(createCommand.DisplayName));
+                Assert.That(newUser.EmailAddress, Is.EqualTo(createCommand.EmailAddress));
+                Assert.That(newUser.Username, Is.EqualTo(createCommand.Username));
+
+                Assert.That(updatedUser.DisplayName, Is.EqualTo(updateCommand.DisplayName));
+                Assert.That(updatedUser.Username, Is.EqualTo(updateCommand.Username));
+            });
         }
     }
 }
