@@ -4,7 +4,6 @@ using Digivance.Auth.Data.EntityFramework.Entities;
 using Digivance.Auth.Data.Models;
 using Digivance.Auth.Data.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Mail;
 
 namespace Digivance.Auth.Data.EntityFramework.Services
 {
@@ -35,7 +34,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             {
                 Id = userId,
                 EmailAddress = command.EmailAddress,
-                Password = command.Password,
+                Password = new byte[0], // command.Password,
                 TenantId = command.TenantId,
                 DisplayName = command.DisplayName,
                 Username = command.Username
