@@ -1,12 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Title>Digivance Auth Service - HTTP Client Service</Title>
+    <Version>0.2.0</Version>
+    <Authors>dmayor, digivance</Authors>
+    <Company>Digivance Technologies</Company>
+    <Product>Digivance Auth Service</Product>
+    <Description>HTTP client service of the Digivance auth microservice api application</Description>
+
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>0.1.0</Version>
-    <Authors>dmayor, digivance</Authors>
-    <Company>Digivance Technologies</Company>
   </PropertyGroup>
 
   <PropertyGroup>

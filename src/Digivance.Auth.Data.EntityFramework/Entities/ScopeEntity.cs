@@ -2,6 +2,7 @@
 using Digivance.Data.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace Digivance.Auth.Data.EntityFramework.Entities
 {
@@ -29,37 +30,18 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// <summary>
         /// The roles that apply to this scope (may not be loaded when scope is a child)
         /// </summary>
-        public ICollection<RoleEntity>? Roles { get; set; }
-
-        /// <summary>
-        /// Unique id of the Tenant this scope belongs to
-        /// </summary>
-        public Guid TenantId { get; set; }
+        public ICollection<RoleEntity> Roles { get; set; }
 
         /// <summary>
         /// The tenant that this scope belongs to (may not be loaded when scope
         /// is a child, always trust TenantId instead)
         /// </summary>
-        public TenantEntity? Tenant { get; set; }
+        public TenantEntity Tenant { get; set; }
 
         /// <summary>
-        /// Converts to Tenant model
+        /// Unique id of the Tenant this scope belongs to
         /// </summary>
-        /// <param name="recursion">Stops recursing once BaseModel.RecursionLimit is hit</param>
-        /// <returns>Tenant model</returns>
-        public Scope ToModel(int? maxDepth = null, int currentDepth = 0)
-        {
-            if (maxDepth != null && currentDepth >= maxDepth.Value) return null;
-
-            var scope = ToBaseModel<Scope>();
-            scope.Name = Name;
-            scope.Description = Description;
-            scope.Permissions = Permissions?.Select(x => x.ToModel(maxDepth, currentDepth + 1)).ToList();
-            scope.Roles = Roles?.Select(r => r.ToModel(maxDepth, currentDepth + 1)).ToList();
-            scope.Tenant = Tenant?.ToModel(maxDepth, currentDepth + 1);
-
-            return scope;
-        }
+        public Guid TenantId { get; set; }
     }
 
     /// <summary>
@@ -75,6 +57,10 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         {
             builder.ConfigureBaseEntity();
 
+            builder.Property(x => x.Description)
+                .HasMaxLength(4000)
+                .IsRequired(false);
+
             builder.Property(x => x.Name)
                 .HasMaxLength(255)
                 .IsRequired(true);
@@ -82,11 +68,30 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
             builder.HasIndex(x => x.Name)
                 .IsUnique(true);
 
+            builder.HasMany(x => x.Permissions)
+                .WithOne(x => x.Scope);
+
             builder.HasMany(x => x.Roles)
                 .WithOne(x => x.Scope);
 
-            builder.HasMany(x => x.Permissions)
-                .WithOne(x => x.Scope);
+            builder.HasOne(x => x.Tenant)
+                .WithMany(x => x.Scopes);
+        }
+    }
+
+    /// <summary>
+    /// Scope entity mapper configuration
+    /// </summary>
+    public class ScopeMapperConfiguration : IEntityMapperConfiguration
+    {
+        /// <summary>
+        /// Configures automapper for ScopeEntity -> Scope DTO
+        /// </summary>
+        /// <param name="cfg">The configuration builder to use</param>
+        public void Configure(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<ScopeEntity, Scope>()
+                .PreserveReferences();
         }
     }
 }

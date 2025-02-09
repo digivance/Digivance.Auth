@@ -21,6 +21,16 @@ namespace Digivance.Auth.Data.EntityFramework.Contexts
         public DbSet<RoleEntity> Roles { get; set; }
 
         /// <summary>
+        /// RolePermission (many to many relations) table
+        /// </summary>
+        public DbSet<RolePermissionEntity> RolePermissions { get; set; }
+
+        /// <summary>
+        /// Scopes table
+        /// </summary>
+        public DbSet<ScopeEntity> Scopes { get; set; }
+
+        /// <summary>
         /// Tenant table
         /// </summary>
         public DbSet<TenantEntity> Tenants { get; set; }
@@ -28,7 +38,7 @@ namespace Digivance.Auth.Data.EntityFramework.Contexts
         /// <summary>
         /// UserAccounts table
         /// </summary>
-        public DbSet<UserAccountEntity> UserAccounts { get; set; }
+        public DbSet<UserEntity> UserAccounts { get; set; }
 
         /// <summary>
         /// Basic constructor

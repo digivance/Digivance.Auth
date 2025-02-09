@@ -15,108 +15,128 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         /// <summary>
         /// Internally used AuthContext
         /// </summary>
-        private readonly AuthContext db;
+        private readonly AuthContext context;
+
+        /// <summary>
+        /// Internally used EntityMapper
+        /// </summary>
+        private readonly EntityMapper mapper;
 
         /// <summary>
         /// Standard constructor
         /// </summary>
-        /// <param name="dbContext">The AuthContext to use</param>
-        public EfUserService(AuthContext dbContext)
+        /// <param name="context">The AuthContext to use</param>
+        /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
+        public EfUserService(AuthContext context, EntityMapper mapper)
         {
-            this.db = dbContext;
+            this.context = context;
+            this.mapper = mapper;
         }
 
-        public async Task<UserAccount> CreateAsync(CreateUser command, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task<User> CreateAsync(CreateUser command, CancellationToken cancellationToken)
         {
-            var userId = Guid.NewGuid();
-
-            var user = new UserAccountEntity
+            var user = new UserEntity
             {
-                Id = userId,
                 EmailAddress = command.EmailAddress,
-                Password = new byte[0], // command.Password,
+                Password = PasswordHelper.Hash(command.Password),
                 TenantId = command.TenantId,
                 DisplayName = command.DisplayName,
                 Username = command.Username
             };
 
-            db.UserAccounts.Add(user);
-            await db.SaveChangesAsync(cancellationToken);
-            return user.ToModel(maxDepth:1);
+            context.UserAccounts.Add(user);
+            await context.SaveChangesAsync(cancellationToken);
+
+            return mapper.Map<User>(user);
         }
 
-        public Task DeleteByIdAsync(Guid userId, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task DeleteByIdAsync(Guid userId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await context.UserAccounts
+                .Where(x => x.Id == userId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (user != null)
+            {
+                context.UserAccounts.Remove(user);
+                await context.SaveChangesAsync(cancellationToken);
+            }
         }
 
-        public async Task<bool> EmailAddressExistsAsync(string emailAddress, CancellationToken cancellationToken)
-        {
-            var isTaken = await db.UserAccounts
-                .Where(x => x.EmailAddress == emailAddress)
-                .AnyAsync();
-
-            return (isTaken);
-        }
-
-        public async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken)
-        {
-            var isTaken = await db.UserAccounts
-                .Where(x => x.Username == username)
-                .AnyAsync();
-
-            return (isTaken);
-        }
-
+        /// <inheritdoc />
         public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+            => context.UserAccounts
+                .Where(x => x.Id == id)
+                .AnyAsync(cancellationToken);
 
-        public async Task<UserAccount?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken)
-        {
-            var user = await db.UserAccounts
+        /// <inheritdoc />
+        public Task<bool> ExistsByEmailAsync(string emailAddress, CancellationToken cancellationToken)
+            => context.UserAccounts
                 .Where(x => x.EmailAddress == emailAddress)
-                .FirstOrDefaultAsync();
+                .AnyAsync(cancellationToken);
 
-            if (user == null)
-            {
-                throw new Exception("User not found");
-            }
-
-            return user.ToModel(maxDepth:1);
-        }
-
-        public async Task<UserAccount?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
-        {
-            var user = await db.UserAccounts
+        /// <inheritdoc />
+        public Task<bool> ExistsByUsernameAsync(Guid tenantId, string username, CancellationToken cancellationToken)
+            => context.UserAccounts
+                .Where(x => x.TenantId == tenantId)
                 .Where(x => x.Username == username)
-                .FirstOrDefaultAsync();
+                .AnyAsync(cancellationToken);
+
+        /// <inheritdoc />
+        public async Task<User?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken)
+        {
+            var user = await context.UserAccounts
+                .Where(x => x.EmailAddress == emailAddress)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
-            {
-                throw new Exception("User not found");
-            }
+                return null;
 
-            return user.ToModel(maxDepth: 1);
+            return mapper.Map<User>(user);
         }
 
-        public async Task<UserAccount?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task<User?> GetByUsernameAsync(Guid tenantId, string username, CancellationToken cancellationToken)
         {
-            var user = await db.UserAccounts
-                .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+            var user = await context.UserAccounts
+                .Where(x => x.TenantId == tenantId)
+                .Where(x => x.Username == username)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
-            {
-                throw new Exception("User not found");
-            }
+                return null;
 
-            return user.ToModel(maxDepth:1);
+            return mapper.Map<User>(user);
         }
 
-        public Task<UserAccount> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await context.UserAccounts
+                .Where(x => x.Id == userId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (user == null)
+                return null;
+
+            return mapper.Map<User>(user);
+        }
+
+        /// <inheritdoc />
+        public async Task<User?> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken)
+        {
+            var user = await GetByIdAsync(id, cancellationToken);
+
+            if (user == null)
+                return null;
+
+            user.DisplayName = command.DisplayName;
+            user.Username = command.Username;
+
+            await context.SaveChangesAsync(cancellationToken);
+            return mapper.Map<User>(user);
         }
     }
 }

@@ -1,6 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Title>Digivance Auth Service - EF Data Implementations</Title>
+    <Version>0.2.0</Version>
+    <Authors>dmayor, digivance</Authors>
+    <Company>Digivance Technologies</Company>
+    <Product>Digivance Auth Service</Product>
+    <Description>EF Data layer implementations of the Digivance auth microservice api application</Description>
+
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -11,6 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Digivance.Data" Version="0.1.0-pre.9" />
     <PackageReference Include="Digivance.Data.EntityFramework" Version="0.1.0-pre.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.1" />

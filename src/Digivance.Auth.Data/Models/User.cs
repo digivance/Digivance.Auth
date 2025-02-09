@@ -5,7 +5,7 @@ namespace Digivance.Auth.Data.Models
     /// <summary>
     /// Represents a user account / identity
     /// </summary>
-    public record UserAccount : BaseModel
+    public record User : BaseModel
     {
         /// <summary>
         /// Optional display name that the user can choose to identify themselves as

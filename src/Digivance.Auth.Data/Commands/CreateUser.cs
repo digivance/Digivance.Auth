@@ -1,7 +1,5 @@
-﻿using Digivance.Auth.Data.Services;
-using FluentValidation;
+﻿using FluentValidation;
 using System.Net.Mail;
-using System.Security;
 
 namespace Digivance.Auth.Data.Commands
 {

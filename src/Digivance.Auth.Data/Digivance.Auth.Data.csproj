@@ -1,12 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Title>Digivance Auth Service - Data Layer</Title>
+    <Version>0.2.0</Version>
+    <Authors>dmayor, digivance</Authors>
+    <Company>Digivance Technologies</Company>
+    <Product>Digivance Auth Service</Product>
+    <Description>Data layer of the Digivance auth microservice api application</Description>
+
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>0.1.0</Version>
-    <Authors>dmayor, digivance</Authors>
-    <Company>Digivance Technologies</Company>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -14,12 +18,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Digivance.Data" Version="0.1.0-pre.9" />
-    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <Compile Remove="Tests\**" />
+    <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Tests\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\" />
+    <PackageReference Include="Digivance.Data" Version="0.1.0-pre.9" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
   </ItemGroup>
 
 </Project>
