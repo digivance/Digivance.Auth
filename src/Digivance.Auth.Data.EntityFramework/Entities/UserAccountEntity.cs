@@ -1,11 +1,8 @@
 ﻿using Digivance.Auth.Data.Models;
 using Digivance.Data.EntityFramework.Entities;
-using Digivance.Data.Models;
-using System.Reflection.Metadata;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-
+using System.Text.Json.Serialization;
 
 namespace Digivance.Auth.Data.EntityFramework.Entities
 {
@@ -34,7 +31,11 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// </summary>
         public bool IsEmailVerified { get; set; } = false;
 
-        public string Password { get; set; }
+        /// <summary>
+        /// Hashed password, never expose this
+        /// </summary>
+        [JsonIgnore]
+        public byte[] Password { get; set; }
 
         /// <summary>
         /// Roles this user is assigned to
@@ -57,6 +58,12 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// </summary>
         public string Username { get; set; }
 
+        /// <summary>
+        /// Converts this entity to a standard DTO model
+        /// </summary>
+        /// <param name="maxDepth">Because entity framework, we may need to limit serialization loops</param>
+        /// <param name="currentDepth">Used to track recursion</param>
+        /// <returns>UserAccount DTO Model</returns>
         public UserAccount ToModel(int? maxDepth = 0, int currentDepth = 0)
         {
             if (maxDepth != null && currentDepth >= maxDepth.Value) return null;
@@ -87,6 +94,10 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         {
             builder.ConfigureBaseEntity();
 
+            builder.Property(x => x.DisplayName)
+                .HasMaxLength(255)
+                .IsRequired(false);
+
             builder.Property(x => x.EmailAddress)
                 .HasMaxLength(256)
                 .IsRequired(true);
@@ -94,13 +105,12 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
             builder.HasIndex(x => x.EmailAddress)
                 .IsUnique(true);
 
-            builder.Property(x => x.DisplayName)
-                .HasMaxLength(255)
-                .IsRequired(false);
-
             builder.Property(x => x.IsEmailVerified)
                 .HasDefaultValue(false)
                 .IsRequired(true);
+
+            builder.Property(x => x.Password)
+                .HasMaxLength(512);
 
             builder.HasOne(x => x.Tenant)
                 .WithMany(x => x.UserAccounts);
