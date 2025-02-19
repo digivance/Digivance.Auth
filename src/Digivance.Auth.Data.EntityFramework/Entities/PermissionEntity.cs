@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Digivance.Auth.Data.Models;
 using Digivance.Data.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

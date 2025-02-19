@@ -1,7 +1,9 @@
-﻿using Digivance.Auth.Data.Commands;
+using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework.Contexts;
+using Digivance.Auth.Data.EntityFramework.Entities;
 using Digivance.Auth.Data.Models;
 using Digivance.Auth.Data.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Digivance.Auth.Data.EntityFramework.Services
 {
@@ -14,55 +16,104 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         /// <summary>
         /// Internally used AuthContext
         /// </summary>
-        private readonly AuthContext dbContext;
+        private readonly AuthContext context;
+
+        /// <summary>
+        /// Internally used EntityMapper
+        /// </summary>
+        private readonly EntityMapper mapper;
 
         /// <summary>
         /// Standard constructor
         /// </summary>
-        /// <param name="dbContext">The AuthContext to use</param>
-        public EfTenantService(AuthContext dbContext)
+        /// <param name="context">The AuthContext to use</param>
+        /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
+        public EfTenantService(AuthContext context, EntityMapper mapper)
         {
-            this.dbContext = dbContext;
+            this.context = context;
+            this.mapper = mapper;
         }
 
-        public Task<Tenant> CreateTenantAsync(CreateTenant command, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task<Tenant> CreateAsync(CreateTenant command, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tenant = new TenantEntity
+            {
+                Description = command.Description,
+                Name = command.Name
+            };
+
+            context.Tenants.Add(tenant);
+            await context.SaveChangesAsync(cancellationToken);
+
+            return mapper.Map<Tenant>(tenant);
         }
 
-        public Task DeleteTenantByIdAsync(Guid tenantId, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task DeleteByIdAsync(Guid tenantId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tenant = await context.Tenants
+                .Where(x => x.Id == tenantId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (tenant != null)
+            {
+                context.Tenants.Remove(tenant);
+                await context.SaveChangesAsync(cancellationToken);
+            }
         }
 
+        /// <inheritdoc />
         public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
+            => context.Tenants
+            .Where(x => x.Id == id)
+            .AnyAsync(cancellationToken);
+
+        /// <inheritdoc />
+        public Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken)
+            => context.Tenants
+                .Where (x => x.Name == name)
+                .AnyAsync(cancellationToken);
+
+        /// <inheritdoc />
+        public async Task<Tenant?> GetByIdAsync(Guid tenantId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tenant = await context.Tenants
+              .Where(x => x.Id == tenantId)
+              .FirstOrDefaultAsync(cancellationToken);
+
+            if (tenant == null)
+                return null;
+
+            return mapper.Map<Tenant>(tenant);
         }
 
-        public Task<Tenant?> GetTenantByIdAsync(Guid tenantId, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task<Tenant?> GetByNameAsync(string name, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tenant = await context.Tenants
+               .Where(x => x.Name == name)
+               .FirstOrDefaultAsync(cancellationToken);
+
+            if (tenant == null)
+                return null;
+
+            return mapper.Map<Tenant>(tenant);
         }
 
-        public Task<Tenant?> GetTenantByNameAsync(string name, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task<Tenant> UpdateAsync(Guid id, UpdateTenant command, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-        }
+            var tenant = await GetByIdAsync(id, cancellationToken);
 
-        public Task<bool> TenantExistsAsync(Guid id, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+            if (tenant == null)
+                return null;
 
-        public Task<bool> TenantNameExistsAsync(string name, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+            tenant.Name = command.Name;
+            tenant.Description = command.Description;
 
-        public Task<Tenant> UpdateTenantAsync(Guid id, UpdateTenant command, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
+            await context.SaveChangesAsync(cancellationToken);
+            return mapper.Map<Tenant>(tenant);
         }
     }
 }
