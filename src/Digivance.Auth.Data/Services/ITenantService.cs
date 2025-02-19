@@ -9,6 +9,14 @@ namespace Digivance.Auth.Data.Services
     public interface ITenantService
     {
         /// <summary>
+        /// Checks to see if a tenant exists by this unique id
+        /// </summary>
+        /// <param name="id">Unique id of the tenant to look for</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>True if a tenant exists by this unique id</returns>
+        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Create a new tenant
         /// </summary>
         /// <param name="command">The create tenant command</param>

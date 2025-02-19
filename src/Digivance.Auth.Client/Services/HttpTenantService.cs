@@ -20,6 +20,11 @@ namespace Digivance.Auth.Client.Services
             throw new NotImplementedException();
         }
 
+        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Tenant?> GetTenantByIdAsync(Guid tenantId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
