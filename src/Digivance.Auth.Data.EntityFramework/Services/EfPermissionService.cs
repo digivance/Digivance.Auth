@@ -7,28 +7,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Digivance.Auth.Data.EntityFramework.Services
 {
-    public class EfPermissionService : IPermissionService
+    /// <summary>
+    /// Entity framework implementation of our IPermssionService
+    /// </summary>
+    /// <param name="context">The AuthContext to use</param>
+    /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
+    public class EfPermissionService(AuthContext context, EntityMapper mapper) : IPermissionService
     {
         /// <summary>
         /// Internally used AuthContext
         /// </summary>
-        private readonly AuthContext context;
+        private readonly AuthContext context = context;
 
         /// <summary>
         /// Internally used EntityMapper
         /// </summary>
-        private readonly EntityMapper mapper;
-
-        /// <summary>
-        /// Standard constructor
-        /// </summary>
-        /// <param name="context">The AuthContext to use</param>
-        /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
-        public EfPermissionService(AuthContext context, EntityMapper mapper)
-        {
-            this.context = context;
-            this.mapper = mapper;
-        }
+        private readonly EntityMapper mapper = mapper;
 
         /// <inheritdoc />
         public async Task<Permission> CreateAsync(CreatePermission command, CancellationToken cancellationToken)
@@ -67,7 +61,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public Task<bool> ExistsByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken)
+        public Task<bool> ExistsByNameAsync(Guid? scopeId, string name, CancellationToken cancellationToken)
             => context.Permissions
                 .Where(x => x.ScopeId == scopeId)
                 .Where(x => x.Name == name)
@@ -87,7 +81,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Permission?> GetByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken)
+        public async Task<Permission?> GetByNameAsync(Guid? scopeId, string name, CancellationToken cancellationToken)
         {
             var permission = await context.Permissions
                 .Where(x => x.ScopeId == scopeId)
