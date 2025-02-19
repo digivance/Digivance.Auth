@@ -10,37 +10,37 @@ namespace Digivance.Auth.Client.Services
     /// </summary>
     public class HttpTenantService : ITenantService
     {
-        public Task<Tenant> CreateTenantAsync(CreateTenant command, CancellationToken cancellationToken)
+        public Task<Tenant> CreateAsync(CreateTenant command, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteTenantByIdAsync(Guid tenantId, CancellationToken cancellationToken)
+        public Task DeleteByIdAsync(Guid tenantId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Tenant?> GetTenantByIdAsync(Guid tenantId, CancellationToken cancellationToken)
+        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Tenant?> GetTenantByNameAsync(string name, CancellationToken cancellationToken)
+        public Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> TenantExistsAsync(Guid id, CancellationToken cancellationToken)
+        public Task<Tenant?> GetByIdAsync(Guid tenantId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> TenantNameExistsAsync(string name, CancellationToken cancellationToken)
+        public Task<Tenant?> GetByNameAsync(string name, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Tenant> UpdateTenantAsync(Guid id, UpdateTenant command, CancellationToken cancellationToken)
+        public Task<Tenant> UpdateAsync(Guid id, UpdateTenant command, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
