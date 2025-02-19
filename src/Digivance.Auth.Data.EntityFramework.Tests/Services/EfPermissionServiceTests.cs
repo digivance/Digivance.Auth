@@ -27,8 +27,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            if (context != null)
-                context.Dispose();
+            context?.Dispose();
         }
 
         [Test]

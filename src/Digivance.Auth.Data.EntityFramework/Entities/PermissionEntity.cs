@@ -1,8 +1,8 @@
-﻿using Digivance.Auth.Data.Models;
+using AutoMapper;
+using Digivance.Auth.Data.Models;
 using Digivance.Data.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 
 namespace Digivance.Auth.Data.EntityFramework.Entities
 {
@@ -14,7 +14,7 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// <summary>
         /// Human friendly description of this permission
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Name of this permission, must be unique per tenant
@@ -27,14 +27,14 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         public ICollection<RolePermissionEntity> Roles { get; set; }
 
         /// <summary>
-        /// The scope that this permission belongs to
+        /// The scope that this permission belongs to (null is considered global per tenant)
         /// </summary>
-        public ScopeEntity Scope { get; set; }
+        public ScopeEntity? Scope { get; set; }
 
         /// <summary>
-        /// Unique id of the scope this permission belongs to
+        /// Unique id of the scope this permission belongs to (null is considered global per tenant)
         /// </summary>
-        public Guid ScopeId { get; set; }
+        public Guid? ScopeId { get; set; }
 
         /// <summary>
         /// Navigation property to the tenant that this permission belongs to
@@ -46,6 +46,9 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// </summary>
         public Guid TenantId { get; set; }
 
+        /// <summary>
+        /// Users that have this permission assigned explicitly
+        /// </summary>
         public ICollection<UserPermissionEntity> Users { get; set; }
     }
 

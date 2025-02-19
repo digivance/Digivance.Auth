@@ -40,7 +40,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="name">Unique (per scope) name to look for</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>True if a permission with this name exists within this scope</returns>
-        public Task<bool> ExistsByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken);
+        public Task<bool> ExistsByNameAsync(Guid? scopeId, string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a Permission DTO model representing the requested permission by id
@@ -58,7 +58,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="name">Unique (per scope) name of the permission to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Permission model or null if not found</returns>
-        public Task<Permission?> GetByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken);
+        public Task<Permission?> GetByNameAsync(Guid? scopeId, string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates an existing Permission based on the provided unique id and the update command

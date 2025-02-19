@@ -1,4 +1,4 @@
-﻿using Digivance.Auth.Data.Commands;
+using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework.Contexts;
 using Digivance.Auth.Data.EntityFramework.Entities;
 using Digivance.Auth.Data.Models;
