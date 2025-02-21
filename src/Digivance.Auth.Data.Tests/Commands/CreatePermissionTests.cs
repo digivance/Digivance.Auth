@@ -71,7 +71,7 @@ namespace Digivance.Auth.Data.Tests.Commands
         }
 
         [Test]
-        public async Task CanBeValid()
+        public async Task Can_BeValid()
         {
             var (p,s,t) = GetPassingServices();
             var validator = new CreatePermissionValidator(p, s, t);
@@ -89,7 +89,7 @@ namespace Digivance.Auth.Data.Tests.Commands
         }
 
         [Test]
-        public async Task CanFailLongDescription()
+        public async Task CanFail_LongDescription()
         {
             var (p, s, t) = GetPassingServices();
             var validator = new CreatePermissionValidator(p, s, t);
@@ -112,7 +112,7 @@ namespace Digivance.Auth.Data.Tests.Commands
         }
 
         [Test]
-        public async Task CanFailMissingName()
+        public async Task CanFail_MissingName()
         {
             var (p, s, t) = GetPassingServices();
             var validator = new CreatePermissionValidator(p, s, t);
@@ -130,7 +130,7 @@ namespace Digivance.Auth.Data.Tests.Commands
         }
 
         [Test]
-        public async Task CanFailDuplicateName()
+        public async Task CanFail_DuplicateName()
         {
             // This p (permission service) will say the permission already exists which should
             // cause our validator to fail
@@ -152,7 +152,7 @@ namespace Digivance.Auth.Data.Tests.Commands
         }
 
         [Test]
-        public async Task CanFailInvalidScope()
+        public async Task CanFail_InvalidScope()
         {
             var p = GetPermissionService(false);
             // This s (scope service) will say the scope doesn't exists which should
@@ -176,7 +176,7 @@ namespace Digivance.Auth.Data.Tests.Commands
 
 
         [Test]
-        public async Task CanFailInvalidTenant()
+        public async Task CanFail_InvalidTenant()
         {
             var p = GetPermissionService(false);
             var s = GetScopeService(true);
