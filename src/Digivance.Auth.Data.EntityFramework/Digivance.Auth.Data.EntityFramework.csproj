@@ -22,6 +22,8 @@
     <PackageReference Include="Digivance.Data" Version="0.1.0-pre.9" />
     <PackageReference Include="Digivance.Data.EntityFramework" Version="0.1.0-pre.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.5.0" />
   </ItemGroup>
 
   <ItemGroup>

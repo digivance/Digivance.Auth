@@ -44,6 +44,12 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         public ICollection<UserPermissionEntity> Permissions { get; set; }
 
         /// <summary>
+        /// Internally used (not returned in models) these are the currently valid
+        /// codes that can be used to refresh bearer tokens
+        /// </summary>
+        public ICollection<UserRefreshCodeEntity> RefreshCodes { get; set; }
+
+        /// <summary>
         /// Relations explaining roles this user is assigned
         /// </summary>
         public ICollection<UserRoleEntity> Roles { get; set; }
@@ -56,7 +62,7 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// <summary>
         /// Unique id of the tenant that this user account exists in
         /// </summary>
-        public Guid TenantId { get; set; }
+        public Guid? TenantId { get; set; }
 
         /// <summary>
         /// Optional, unique per tenant if provided, custom username of this user account
@@ -96,6 +102,9 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
                 .HasMaxLength(512);
 
             builder.HasMany(x => x.Permissions)
+                .WithOne(x => x.User);
+
+            builder.HasMany(x => x.RefreshCodes)
                 .WithOne(x => x.User);
 
             builder.HasMany(x => x.Roles)
