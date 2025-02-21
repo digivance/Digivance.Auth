@@ -31,7 +31,7 @@ namespace Digivance.Auth.Data.Commands
     }
 
     /// <summary>
-    /// Fluid validations for our CreatePermission command
+    /// Fluent validations for our CreatePermission command
     /// </summary>
     public class CreatePermissionValidator : AbstractValidator<CreatePermission>
     {
