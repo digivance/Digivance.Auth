@@ -41,6 +41,11 @@ namespace Digivance.Auth.Data.EntityFramework.Contexts
         public DbSet<UserEntity> UserAccounts { get; set; }
 
         /// <summary>
+        /// UserRefreshCodes table
+        /// </summary>
+        public DbSet<UserRefreshCodeEntity> UserRefreshCodes { get; set; }
+
+        /// <summary>
         /// Basic constructor
         /// </summary>
         /// <param name="options">The DbContextOptions to build with</param>
