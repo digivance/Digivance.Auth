@@ -17,7 +17,7 @@ namespace Digivance.Auth.Data.Commands
         /// <summary>
         /// Unique id of the user account we want to update
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Optional, unique per tenant if provided, custom username of this user account
@@ -49,7 +49,7 @@ namespace Digivance.Auth.Data.Commands
                 .MaximumLength(255)
                     .WithMessage(ERR_DISPLAYNAME_LENGTH);
 
-            RuleFor(x => x.UserId)
+            RuleFor(x => x.Id)
                 .MustAsync(BeExistingUser)
                     .WithMessage(ERR_USERID_NOTFOUND);
 
@@ -79,7 +79,7 @@ namespace Digivance.Auth.Data.Commands
         public async Task<bool> BeUniqueEmailAddress(UpdateUser command, string emailAddress, CancellationToken cancellationToken)
         {
             // Need to get the user to compute
-            var user = await userService.GetByIdAsync(command.UserId, cancellationToken);
+            var user = await userService.GetByIdAsync(command.Id, cancellationToken);
             if (user == null)
                 return false;
 
@@ -100,7 +100,7 @@ namespace Digivance.Auth.Data.Commands
         public async Task<bool> BeUniqueUsername(UpdateUser command, string username, CancellationToken cancellationToken)
         {
             // Need to get the user to compute
-            var user = await userService.GetByIdAsync(command.UserId, cancellationToken);
+            var user = await userService.GetByIdAsync(command.Id, cancellationToken);
             if (user == null)
                 return false;
 
