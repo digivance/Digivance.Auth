@@ -36,12 +36,12 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// The tenant that this scope belongs to (may not be loaded when scope
         /// is a child, always trust TenantId instead)
         /// </summary>
-        public TenantEntity Tenant { get; set; }
+        public TenantEntity? Tenant { get; set; }
 
         /// <summary>
         /// Unique id of the Tenant this scope belongs to
         /// </summary>
-        public Guid TenantId { get; set; }
+        public Guid? TenantId { get; set; }
     }
 
     /// <summary>

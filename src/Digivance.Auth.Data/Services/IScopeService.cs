@@ -64,6 +64,6 @@ namespace Digivance.Auth.Data.Services
         /// <param name="command">Update command to apply</param>
         /// <param name="cancellationToken">Cancellation Token</param>
         /// <returns>scope model or null if not found</returns>
-        public Task<Scope?> UpdateAsync(Guid id, UpdatePermission command, CancellationToken cancellationToken);
+        public Task<Scope?> UpdateAsync(Guid id, UpdateScope command, CancellationToken cancellationToken);
     }
 }

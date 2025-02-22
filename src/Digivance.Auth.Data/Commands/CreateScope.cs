@@ -18,6 +18,6 @@
         /// <summary>
         /// Required unique id of the tenant this scope exists in
         /// </summary>
-        public Guid TenantId { get; set; }
+        public Guid? TenantId { get; set; }
     }
 }
