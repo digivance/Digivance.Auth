@@ -1,5 +1,12 @@
 using Asp.Versioning;
 using Digivance.Auth.Api.Endpoints;
+using Digivance.Auth.Api.Middleware;
+using Digivance.Auth.Data.EntityFramework;
+using Digivance.Auth.Data.EntityFramework.Contexts;
+using Digivance.Auth.Data.EntityFramework.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 namespace Digivance.Auth.Api
@@ -32,7 +39,9 @@ namespace Digivance.Auth.Api
                 .ReadFrom.Configuration(builder.Configuration)
                 .CreateLogger();
 
+            // Build app and seed database
             var app = builder.Build();
+            SeedDatabase(app.Services);
 
             // This will host our client application from /wwwroot, note hot reloading does
             // not work when viewing from this host.
@@ -41,13 +50,17 @@ namespace Digivance.Auth.Api
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
-            {
                 app.MapOpenApi();
-            }
 
             app.UseAuthorization();
 
-            app.UseHealthEndpointV1();
+            app.UseMiddleware<ExceptionFilter>();
+
+            app
+                .UseAuthEndpointV1()
+                .UseHealthEndpointV1()
+                .UseSwagger()
+                .UseSwaggerUI();
 
             return app;
         }
@@ -83,11 +96,67 @@ namespace Digivance.Auth.Api
                 );
             });
 
+            // In memory database for now...
+            services.AddDbContext<AuthContext>(options => options.UseInMemoryDatabase("alpha"), ServiceLifetime.Singleton);
+
+            // Global middleware
+            services
+                .AddScoped<ExceptionFilter>()
+                .AddEndpointsApiExplorer();
+
             // Endpoints
             services
+                .AddAuthEndpointV1()
                 .AddHealthEndpointV1();
 
+            // Swagger
+            services
+                .AddSwaggerGen(config =>
+                {
+                    var jwtSecurityScheme = new OpenApiSecurityScheme
+                    {
+                        BearerFormat = "JWT",
+                        Name = "JWT Authentication",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.Http,
+                        Scheme = JwtBearerDefaults.AuthenticationScheme,
+                        Description = "Enter a currently valid JWT token here",
+
+                        Reference = new OpenApiReference
+                        {
+                            Id = JwtBearerDefaults.AuthenticationScheme,
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    };
+
+                    config.SwaggerDoc("v1", new OpenApiInfo { Title = "Digivance Auth - API", Version = "v1" });
+                    config.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+                    config.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        { jwtSecurityScheme, Array.Empty<string>() }
+                    });
+                });
+
             return builder;
+        }
+
+        /// <summary>
+        /// We can use this to seed an initial state of the Digivance Auth database
+        /// </summary>
+        /// <param name="services">The DI ServiceProvider to get authContext from</param>
+        protected static void SeedDatabase(IServiceProvider services)
+        {
+            var user = new UserEntity
+            {
+                DisplayName = "Alpha Test",
+                EmailAddress = "test@digivance.com",
+                Password = PasswordHelper.Hash("R@nd0pass"),
+                Username = "alpha.test"
+            };
+
+            var authContext = services.GetRequiredService<AuthContext>();
+            authContext.UserAccounts.Add(user);
+            authContext.SaveChangesAsync(default).Wait();
         }
     }
 }

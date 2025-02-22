@@ -149,12 +149,12 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         /// <returns>JWT bearer token</returns>
         private async Task<string> GenerateJwtAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            var claims = new List<Claim>
+            var claims = new Dictionary<string, object?>
             {
-                new Claim("displayName", user.DisplayName),
-                new Claim("email", user.EmailAddress),
-                new Claim("username", user.Username ?? user.EmailAddress),
-                new Claim("userId", user.Id.ToString())
+                { "displayName", user.DisplayName },
+                { "email", user.EmailAddress },
+                { "username", user.Username ?? user.EmailAddress },
+                { "userId", user.Id.ToString() }
             };
 
             var roleIds = await authContext.Roles
@@ -171,24 +171,29 @@ namespace Digivance.Auth.Data.EntityFramework.Services
                 .ToListAsync(cancellationToken);
 
             if (roleIds.Any())
-                claims.AddRange(roleIds.Select(x => new Claim("r", x.ToString())));
+                claims.Add("roles", roleIds);
 
             if (permissionsIds.Any())
-                claims.AddRange(permissionsIds.Select(x => new Claim("p", x.ToString())));
+                claims.Add("permissions", permissionsIds);
 
             var signingBytes = Convert.FromBase64String(options.JwtSigningKey);
             var key = new SymmetricSecurityKey(signingBytes);
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(
-                audience: options.JwtAudience,
-                claims: claims,
-                expires: DateTime.UtcNow.Add(options.BearerExpiry),
-                issuer: options.JwtIssuer,
-                signingCredentials: credentials
-            );
+            var descriptor = new SecurityTokenDescriptor
+            {
+                Audience = options.JwtAudience,
+                Claims = claims,
+                Expires = DateTime.UtcNow.Add(options.BearerExpiry),
+                Issuer = options.JwtIssuer,
+                SigningCredentials = credentials
+            };
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.CreateToken(descriptor);
+
+            return new JwtSecurityTokenHandler()
+                .WriteToken(token);
         }
 
         /// <summary>
