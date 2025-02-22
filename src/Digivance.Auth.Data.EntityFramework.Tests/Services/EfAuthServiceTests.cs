@@ -108,13 +108,13 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                 var assignedPermissionId = user.Roles.First().Role.Permissions.First().PermissionId.ToString();
                 var explicitPermissionId = user.Permissions.First().PermissionId.ToString();
 
-                Assert.That(token.Claims.Any(x => x.Type == "p" && x.Value == assignedPermissionId), Is.True);
-                Assert.That(token.Claims.Any(x => x.Type == "p" && x.Value == explicitPermissionId), Is.True);
+                Assert.That(token.Claims.Any(x => x.Type == "permissions" && x.Value == assignedPermissionId), Is.True);
+                Assert.That(token.Claims.Any(x => x.Type == "permissions" && x.Value == explicitPermissionId), Is.True);
 
                 // Roles we expect in the token.Claims
                 var roleId = user.Roles.First().RoleId.ToString();
 
-                Assert.That(token.Claims.Any(x => x.Type == "r" && x.Value == roleId), Is.True);
+                Assert.That(token.Claims.Any(x => x.Type == "roles" && x.Value == roleId), Is.True);
             });
         }
 
@@ -149,13 +149,13 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                 var assignedPermissionId = user.Roles.First().Role.Permissions.First().PermissionId.ToString();
                 var explicitPermissionId = user.Permissions.First().PermissionId.ToString();
 
-                Assert.That(token.Claims.Any(x => x.Type == "p" && x.Value == assignedPermissionId), Is.True);
-                Assert.That(token.Claims.Any(x => x.Type == "p" && x.Value == explicitPermissionId), Is.True);
+                Assert.That(token.Claims.Any(x => x.Type == "permissions" && x.Value == assignedPermissionId), Is.True);
+                Assert.That(token.Claims.Any(x => x.Type == "permissions" && x.Value == explicitPermissionId), Is.True);
 
                 // Roles we expect in the token.Claims
                 var roleId = user.Roles.First().RoleId.ToString();
 
-                Assert.That(token.Claims.Any(x => x.Type == "r" && x.Value == roleId), Is.True);
+                Assert.That(token.Claims.Any(x => x.Type == "roles" && x.Value == roleId), Is.True);
             });
         }
     }
