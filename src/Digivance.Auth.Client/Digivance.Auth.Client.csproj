@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Digivance.Auth.Data\Digivance.Auth.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

@@ -10,28 +10,19 @@ namespace Digivance.Auth.Data.EntityFramework.Services
     /// <summary>
     /// Entity framework implementation of User service
     /// </summary>
-    public class EfUserService : IUserService
+    /// <param name="context">The AuthContext to use</param>
+    /// <param name="mapper">The EntityMapper to use when converting entities to DTO models</param>
+    public class EfUserService(AuthContext context, EntityMapper mapper) : IUserService
     {
         /// <summary>
         /// Internally used AuthContext
         /// </summary>
-        private readonly AuthContext context;
+        private readonly AuthContext context = context;
 
         /// <summary>
         /// Internally used EntityMapper
         /// </summary>
-        private readonly EntityMapper mapper;
-
-        /// <summary>
-        /// Standard constructor
-        /// </summary>
-        /// <param name="context">The AuthContext to use</param>
-        /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
-        public EfUserService(AuthContext context, EntityMapper mapper)
-        {
-            this.context = context;
-            this.mapper = mapper;
-        }
+        private readonly EntityMapper mapper = mapper;
 
         /// <inheritdoc />
         public async Task<User> CreateAsync(CreateUser command, CancellationToken cancellationToken)
@@ -72,37 +63,25 @@ namespace Digivance.Auth.Data.EntityFramework.Services
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public Task<bool> ExistsByEmailAsync(string emailAddress, CancellationToken cancellationToken)
+        public Task<bool> ExistsByEmailAsync(Guid? tenantId, string emailAddress, CancellationToken cancellationToken)
             => context.UserAccounts
+                .Where(x => x.TenantId == tenantId)
                 .Where(x => x.EmailAddress == emailAddress)
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public Task<bool> ExistsByUsernameAsync(Guid tenantId, string username, CancellationToken cancellationToken)
+        public Task<bool> ExistsByUsernameAsync(Guid? tenantId, string username, CancellationToken cancellationToken)
             => context.UserAccounts
                 .Where(x => x.TenantId == tenantId)
                 .Where(x => x.Username == username)
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public async Task<User?> GetByEmailAddressAsync(string emailAddress, CancellationToken cancellationToken)
-        {
-            var user = await context.UserAccounts
-                .Where(x => x.EmailAddress == emailAddress)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (user == null)
-                return null;
-
-            return mapper.Map<User>(user);
-        }
-
-        /// <inheritdoc />
-        public async Task<User?> GetByUsernameAsync(Guid tenantId, string username, CancellationToken cancellationToken)
+        public async Task<User?> GetByEmailAddressAsync(Guid? tenantId, string emailAddress, CancellationToken cancellationToken)
         {
             var user = await context.UserAccounts
                 .Where(x => x.TenantId == tenantId)
-                .Where(x => x.Username == username)
+                .Where(x => x.EmailAddress == emailAddress)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
@@ -115,7 +94,25 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
         {
             var user = await context.UserAccounts
+                .Include(x => x.Permissions)
+                    .ThenInclude(x => x.Permission)
+                .Include(x => x.Roles)
+                    .ThenInclude(x => x.Role)
                 .Where(x => x.Id == userId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (user == null)
+                return null;
+
+            return mapper.Map<User>(user);
+        }
+
+        /// <inheritdoc />
+        public async Task<User?> GetByUsernameAsync(Guid? tenantId, string username, CancellationToken cancellationToken)
+        {
+            var user = await context.UserAccounts
+                .Where(x => x.TenantId == tenantId)
+                .Where(x => x.Username == username)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)

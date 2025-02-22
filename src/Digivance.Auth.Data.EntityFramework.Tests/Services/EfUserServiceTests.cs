@@ -110,7 +110,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var newUser = await service.CreateAsync(command, default);
-            var exists = await service.ExistsByEmailAsync(newUser.EmailAddress, default);
+            var exists = await service.ExistsByEmailAsync(command.TenantId, newUser.EmailAddress, default);
             await service.DeleteByIdAsync(newUser.Id, default);
 
             Assert.That(exists, Is.True);
@@ -146,7 +146,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var newUser = await service.CreateAsync(command, default);
-            var model = await service.GetByEmailAddressAsync(newUser.EmailAddress, default);
+            var model = await service.GetByEmailAddressAsync(command.TenantId, newUser.EmailAddress, default);
             await service.DeleteByIdAsync(newUser.Id, default);
 
             Assert.That(model, Is.Not.Null);
