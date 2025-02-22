@@ -65,8 +65,7 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
                 .HasMaxLength(255)
                 .IsRequired(true);
 
-            builder.HasIndex(x => x.Name)
-                .IsUnique(true);
+            builder.HasIndex(x => new { x.TenantId, x.Name }).IsUnique(true);
 
             builder.HasMany(x => x.Permissions)
                 .WithOne(x => x.Scope);
