@@ -128,7 +128,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var newUser = await service.CreateAsync(command, default);
-            var exists = await service.ExistsByUsernameAsync(newUser.TenantId, newUser.Username, default);
+            var exists = await service.ExistsByUsernameAsync(newUser.TenantId, newUser.Username!, default);
             await service.DeleteByIdAsync(newUser.Id, default);
 
             Assert.That(exists, Is.True);
@@ -234,10 +234,11 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var updateCommand = new UpdateUser
             {
                 DisplayName = "New Display Name",
+                Id = newUser.Id,
                 Username = "NewUsername"
             };
 
-            var updatedUser = await service.UpdateAsync(newUser.Id, updateCommand, default);
+            var updatedUser = await service.UpdateAsync(updateCommand, default);
             await service.DeleteByIdAsync(newUser.Id, default);
 
             Assert.Multiple(() =>

@@ -64,21 +64,34 @@ namespace Digivance.Auth.Data.EntityFramework.Services
 
         /// <inheritdoc />
         public Task<bool> ExistsByEmailAsync(Guid? tenantId, string emailAddress, CancellationToken cancellationToken)
-            => context.UserAccounts
+        {
+            if (tenantId == new Guid())
+                tenantId = null;
+
+            return context.UserAccounts
                 .Where(x => x.TenantId == tenantId)
                 .Where(x => x.EmailAddress == emailAddress)
                 .AnyAsync(cancellationToken);
+        }
 
         /// <inheritdoc />
         public Task<bool> ExistsByUsernameAsync(Guid? tenantId, string username, CancellationToken cancellationToken)
-            => context.UserAccounts
+        {
+            if (tenantId == new Guid())
+                tenantId = null;
+
+            return context.UserAccounts
                 .Where(x => x.TenantId == tenantId)
                 .Where(x => x.Username == username)
                 .AnyAsync(cancellationToken);
+        }
 
         /// <inheritdoc />
         public async Task<User?> GetByEmailAddressAsync(Guid? tenantId, string emailAddress, CancellationToken cancellationToken)
         {
+            if (tenantId == new Guid())
+                tenantId = null;
+
             var user = await context.UserAccounts
                 .Where(x => x.TenantId == tenantId)
                 .Where(x => x.EmailAddress == emailAddress)
@@ -110,6 +123,9 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         /// <inheritdoc />
         public async Task<User?> GetByUsernameAsync(Guid? tenantId, string username, CancellationToken cancellationToken)
         {
+            if (tenantId == new Guid())
+                tenantId = null;
+
             var user = await context.UserAccounts
                 .Where(x => x.TenantId == tenantId)
                 .Where(x => x.Username == username)
@@ -122,9 +138,11 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<User?> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken)
+        public async Task<User?> UpdateAsync(UpdateUser command, CancellationToken cancellationToken)
         {
-            var user = await GetByIdAsync(id, cancellationToken);
+            var user = await context.UserAccounts
+                .Where(x => x.Id == command.Id)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
                 return null;

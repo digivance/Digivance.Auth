@@ -35,7 +35,7 @@ namespace Digivance.Auth.Data.Tests.Commands
             var command = new UpdateUser
             {
                 DisplayName = "New User",
-                UserId = userId,
+                Id = userId,
                 Username = "new"
             };
 

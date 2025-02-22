@@ -18,7 +18,7 @@ namespace Digivance.Auth.Api.Endpoints
     public static class AuthEndpoint
     {
         /// <summary>
-        /// Registers necessary dependancies
+        /// Registers necessary dependencies
         /// </summary>
         /// <param name="services">The IServiceCollection to configure</param>
         /// <returns>The same IServiceCollection for builder pattern</returns>

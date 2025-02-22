@@ -82,6 +82,6 @@ namespace Digivance.Auth.Data.Services
         /// <param name="command">The update user command</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The updated UserProfile</returns>
-        public Task<User?> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken);
+        public Task<User?> UpdateAsync(UpdateUser command, CancellationToken cancellationToken);
     }
 }

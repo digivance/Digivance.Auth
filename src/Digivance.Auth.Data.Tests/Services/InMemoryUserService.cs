@@ -96,9 +96,9 @@ namespace Digivance.Auth.Data.Tests.Services
         }
 
         /// <inheritdoc />
-        public Task<User?> UpdateAsync(Guid id, UpdateUser command, CancellationToken cancellationToken)
+        public Task<User?> UpdateAsync(UpdateUser command, CancellationToken cancellationToken)
         {
-            var user = users.FirstOrDefault(x => x.Id == id);
+            var user = users.FirstOrDefault(x => x.Id == command.Id);
             if (user != null)
             {
                 user.DisplayName = command.DisplayName;

@@ -52,13 +52,20 @@ namespace Digivance.Auth.Api
             if (app.Environment.IsDevelopment())
                 app.MapOpenApi();
 
+            // Auth
             app.UseAuthorization();
 
+            // Global middleware
             app.UseMiddleware<ExceptionFilter>();
 
+            // Endpoints
             app
                 .UseAuthEndpointV1()
                 .UseHealthEndpointV1()
+                .UseUserEndpointV1();
+
+            // Swagger
+            app
                 .UseSwagger()
                 .UseSwaggerUI();
 
@@ -102,12 +109,14 @@ namespace Digivance.Auth.Api
             // Global middleware
             services
                 .AddScoped<ExceptionFilter>()
+                .AddScoped<EntityMapper>()
                 .AddEndpointsApiExplorer();
 
             // Endpoints
             services
                 .AddAuthEndpointV1()
-                .AddHealthEndpointV1();
+                .AddHealthEndpointV1()
+                .AddUserEndpointV1();
 
             // Swagger
             services

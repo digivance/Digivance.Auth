@@ -44,7 +44,8 @@ namespace Digivance.Auth.Data.EntityFramework
             {
                 foreach (var entityConfig in entityConfigs)
                 {
-                    IEntityMapperConfiguration config = (IEntityMapperConfiguration)Activator.CreateInstance(entityConfig);
+                    // Never actually null
+                    IEntityMapperConfiguration config = (IEntityMapperConfiguration)Activator.CreateInstance(entityConfig)!;
                     config?.Configure(cfg);
                 }
             });
