@@ -8,6 +8,8 @@ namespace Digivance.Auth.Data.Commands
 {
     public record UpdateScope
     {
+        public Guid Id { get; set; }
+
         /// <summary>
         /// Optional user friendly description of this scope
         /// </summary>

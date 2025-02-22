@@ -197,10 +197,11 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var updateCommand = new UpdateScope
             {
                 Description = "New Scope",
-                Name = "NEW-SCOPE"
+                Name = "NEW-SCOPE",
+                Id = newScope.Id
             };
 
-            var updatedScope = await service.UpdateAsync(newScope.Id, updateCommand, default);
+            var updatedScope = await service.UpdateAsync(updateCommand, default);
             await service.DeleteByIdAsync(newScope.Id, default);
 
             Assert.Multiple(() =>

@@ -96,9 +96,10 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Scope?> GetByNameAsync(Guid tenantId, string name, CancellationToken cancellationToken)
+        public async Task<Scope?> GetByNameAsync(Guid? tenantId, string name, CancellationToken cancellationToken)
         {
             var scope = await context.Scopes
+                .Where(x => x.TenantId == tenantId)
                 .Where(x => x.Name == name)
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -109,10 +110,10 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Scope?> UpdateAsync(Guid id, UpdateScope command, CancellationToken cancellationToken)
+        public async Task<Scope?> UpdateAsync(UpdateScope command, CancellationToken cancellationToken)
         {
             var scope = await context.Scopes
-               .Where(x => x.Id == id)
+               .Where(x => x.Id == command.Id)
                .FirstOrDefaultAsync(cancellationToken);
 
             if (scope == null)
