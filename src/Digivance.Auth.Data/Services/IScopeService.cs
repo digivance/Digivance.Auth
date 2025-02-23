@@ -55,7 +55,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="name">Unique (per scope) name of the scope to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>scope model or null if not found</returns>
-        public Task<Scope?> GetByNameAsync(Guid tenantId, string name, CancellationToken cancellationToken);
+        public Task<Scope?> GetByNameAsync(Guid? tenantId, string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates an existing scope based on the provided unique id and the update command
@@ -64,6 +64,6 @@ namespace Digivance.Auth.Data.Services
         /// <param name="command">Update command to apply</param>
         /// <param name="cancellationToken">Cancellation Token</param>
         /// <returns>scope model or null if not found</returns>
-        public Task<Scope?> UpdateAsync(Guid id, UpdatePermission command, CancellationToken cancellationToken);
+        public Task<Scope?> UpdateAsync(UpdateScope command, CancellationToken cancellationToken);
     }
 }
