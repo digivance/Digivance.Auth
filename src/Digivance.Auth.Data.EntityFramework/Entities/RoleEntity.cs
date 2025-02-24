@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Digivance.Auth.Data.Models;
 using Digivance.Data.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -23,7 +24,7 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// <summary>
         /// Collection of the permissions this role assigns
         /// </summary>
-        public ICollection<RolePermissionEntity> Permissions { get; set; }
+        public ICollection<RolePermissionEntity>? Permissions { get; set; }
 
         /// <summary>
         /// The scope that this role belongs to
@@ -38,17 +39,17 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// <summary>
         /// The tenant that this role belongs to
         /// </summary>
-        public TenantEntity Tenant { get; set; }
+        public TenantEntity? Tenant { get; set; }
 
         /// <summary>
         /// Unique id of the tenant that this role belongs to
         /// </summary>
-        public Guid TenantId { get; set; }
+        public Guid? TenantId { get; set; }
 
         /// <summary>
         /// Users that are assigned this role
         /// </summary>
-        public ICollection<UserRoleEntity> Users { get; set; }
+        public ICollection<UserRoleEntity>? Users { get; set; }
     }
 
     /// <summary>
@@ -102,7 +103,7 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
         /// <param name="cfg">The configuration builder to use</param>
         public void Configure(IMapperConfigurationExpression cfg)
         {
-            cfg.CreateMap<RoleEntity, RoleEntity>()
+            cfg.CreateMap<RoleEntity, Role>()
                 .PreserveReferences();
         }
     }
