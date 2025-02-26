@@ -46,7 +46,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="id">Unique id of the tenant to check</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>True if this tenant id exists</returns>
-        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
+        public Task<bool> ExistsAsync(Guid? id, CancellationToken cancellationToken);
 
         /// <summary>
         /// Ensures that the tenant name exists

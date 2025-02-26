@@ -64,7 +64,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
+        public Task<bool> ExistsAsync(Guid? id, CancellationToken cancellationToken)
             => context.Tenants
             .Where(x => x.Id == id)
             .AnyAsync(cancellationToken);

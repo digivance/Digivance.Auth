@@ -21,7 +21,7 @@ namespace Digivance.Auth.Data.Commands
         /// <summary>
         /// Required unique id of the tenant this scope exists in
         /// </summary>
-        public Guid TenantId { get; set; }
+        public Guid? TenantId { get; set; }
     }
 
     /// <summary>
@@ -69,8 +69,18 @@ namespace Digivance.Auth.Data.Commands
         /// <param name="tenantId">The tenantId to ensure exists</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>true if a tenant exists with this id</returns>
-        public Task<bool> BeExistingTenantAsync(Guid tenantId, CancellationToken cancellationToken)
-            => tenantService.ExistsAsync(tenantId, cancellationToken);
+        public async Task<bool> BeExistingTenantAsync(Guid? tenantId, CancellationToken cancellationToken)
+        {
+            if (tenantId == null)
+            {
+                return true;
+            }
+            else
+            {
+                return await tenantService.ExistsAsync(tenantId, cancellationToken);
+            }
+        }
+
 
         /// <summary>
         /// Custom rule helper to ensure this is a unique name for the provided tenant
