@@ -23,7 +23,7 @@ namespace Digivance.Auth.Data.Tests.Commands
             var mock = new Mock<IScopeService>();
 
             mock
-                .Setup(x => x.ExistsByNameAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Setup(x => x.ExistsByNameAsync(It.IsAny<Guid?>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(returnsTrue));
 
             return mock.Object;

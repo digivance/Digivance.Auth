@@ -59,7 +59,6 @@ namespace Digivance.Auth.Data.Commands
 
             // TenantId is required and must exist
             RuleFor(x => x.TenantId)
-                .NotEmpty()
                 .MustAsync(BeExistingTenantAsync)
                     .WithMessage(ERR_TENANT_MUST_EXIST);
         }
