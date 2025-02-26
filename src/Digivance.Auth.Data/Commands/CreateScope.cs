@@ -69,18 +69,8 @@ namespace Digivance.Auth.Data.Commands
         /// <param name="tenantId">The tenantId to ensure exists</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>true if a tenant exists with this id</returns>
-        public async Task<bool> BeExistingTenantAsync(Guid? tenantId, CancellationToken cancellationToken)
-        {
-            if (tenantId == null)
-            {
-                return true;
-            }
-            else
-            {
-                return await tenantService.ExistsAsync(tenantId, cancellationToken);
-            }
-        }
-
+        public Task<bool> BeExistingTenantAsync(Guid? tenantId, CancellationToken cancellationToken)
+            => tenantService.ExistsAsync(tenantId, cancellationToken);
 
         /// <summary>
         /// Custom rule helper to ensure this is a unique name for the provided tenant
