@@ -98,7 +98,29 @@ namespace Digivance.Auth.Data.Tests.Commands
             Assert.That(res.IsValid, Is.False);
             Assert.That(res.Errors.All(x => x.ErrorMessage == CreateScopeValidator.ERR_DESCRIPTION_TOO_LONG), Is.True);
         }
+        
+        [Test]
+        public async Task CanFail_LongName()
+        {
+            var (s, t) = GetPassingServices();
+            var validator = new CreateScopeValidator(s, t);
 
+            var name = "";
+            for (var i = 0; i <= 101; i++)
+                name += "I'm a long string, too long but not comparatively atleast...";
+
+            var command = new CreateScope
+            {
+                Description = "Irrelevant to this test",
+                Name = name,
+                TenantId = Guid.NewGuid()
+            };
+
+            var res = await validator.ValidateAsync(command, default);
+
+            Assert.That(res.IsValid, Is.False);
+            Assert.That(res.Errors.All(x => x.ErrorMessage == CreateScopeValidator.ERR_SCOPENAME_LENGTH), Is.True);
+        }
         [Test]
         public async Task CanFail_MissingName()
         {
