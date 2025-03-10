@@ -39,7 +39,7 @@ namespace Digivance.Auth.Data.Tests.Commands
             var mock = new Mock<ITenantService>();
 
             mock
-                .Setup(x => x.ExistsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                .Setup(x => x.ExistsAsync(It.IsAny<Guid?>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(returnsTrue));
 
             return mock.Object;
@@ -67,8 +67,7 @@ namespace Digivance.Auth.Data.Tests.Commands
             var command = new CreateScope
             {
                 Description = "Valid description",
-                Name = "Irrelevant to this test",
-                TenantId = Guid.NewGuid() // doesn't matter mocked service will pass it
+                Name = "Irrelevant to this test"
             };
 
             var res = await validator.ValidateAsync(command, default);
