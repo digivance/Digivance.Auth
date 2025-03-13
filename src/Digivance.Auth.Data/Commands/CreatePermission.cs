@@ -39,6 +39,7 @@ namespace Digivance.Auth.Data.Commands
         public const string ERR_PERMISSION_NAME_EXISTS = "A permission with this name already exists in this scope";
         public const string ERR_SCOPE_MUST_EXISTS = "Scope must exist, or be omitted for global";
         public const string ERR_TENANT_MUST_EXIST = "A tenant was not found with this id";
+        public const string ERR_PERMISSION_NAME_EMPTY = "Permission name is required";
 
         private readonly IPermissionService permissionService;
         private readonly IScopeService scopeService;
@@ -62,6 +63,7 @@ namespace Digivance.Auth.Data.Commands
             // Name must be provided and be unique per scope id
             RuleFor(x => x.Name)
                 .NotEmpty()
+                    .WithMessage(ERR_PERMISSION_NAME_EMPTY)
                 .MustAsync(BeUniqueNamePerScopeAsync)
                     .WithMessage(ERR_PERMISSION_NAME_EXISTS);
 

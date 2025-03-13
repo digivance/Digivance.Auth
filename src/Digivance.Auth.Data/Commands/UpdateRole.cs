@@ -38,6 +38,7 @@ namespace Digivance.Auth.Data.Commands
         public const string ERR_ROLE_NAME_EXISTS = "A Role with this name already exists in this scope";
         public const string ERR_ROLENAME_LENGTH = "Role name must be 100 characters or less";
         public const string ERR_ROLEID_NOTFOUND = "No role found for this id";
+        public const string ERR_ROLE_NAME_EMPTY = "Role name is required";
 
         private readonly IRoleService roleService;
 
@@ -57,6 +58,7 @@ namespace Digivance.Auth.Data.Commands
             // Name must be provided and be unique per scope id
             RuleFor(x => x.Name)
                 .NotEmpty()
+                    .WithMessage(ERR_ROLE_NAME_EMPTY)
                 .MaximumLength(100)
                     .WithMessage(ERR_ROLENAME_LENGTH)
                 .MustAsync(BeUniqueNamePerScopeAsync)

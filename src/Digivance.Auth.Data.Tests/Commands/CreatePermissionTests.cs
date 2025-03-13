@@ -126,7 +126,7 @@ namespace Digivance.Auth.Data.Tests.Commands
             var res = await validator.ValidateAsync(command, default);
 
             Assert.That(res.IsValid, Is.False);
-            Assert.That(res.Errors.All(x => x.ErrorMessage == "'Name' must not be empty."), Is.True);
+            Assert.That(res.Errors.All(x => x.ErrorMessage == CreatePermissionValidator.ERR_PERMISSION_NAME_EMPTY), Is.True);
         }
 
         [Test]

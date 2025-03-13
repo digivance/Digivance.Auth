@@ -32,6 +32,7 @@ namespace Digivance.Auth.Data.Commands
         public const string ERR_SCOPE_NAME_EXISTS = "A Scope with this name already exists in this tenant";
         public const string ERR_SCOPEID_NOTFOUND = "No scope found for this id";
         public const string ERR_SCOPENAME_LENGTH = "Scope name must be 100 characters or less";
+        public const string ERR_SCOPE_NAME_EMPTY = "Scope name is required";
 
         private readonly IScopeService scopeService;
 
@@ -52,6 +53,7 @@ namespace Digivance.Auth.Data.Commands
             // Name must be provided and be unique per tenant id
             RuleFor(x => x.Name)
                 .NotEmpty()
+                    .WithMessage(ERR_SCOPE_NAME_EMPTY)
                 .MaximumLength(100)
                     .WithMessage(ERR_SCOPENAME_LENGTH)
                 .MustAsync(BeUniqueNamePerTenantAsync)

@@ -97,6 +97,8 @@ namespace Digivance.Auth.Data.EntityFramework.Services
 
             return mapper.Map<Role>(role);
         }
+
+        /// <inheritdoc />
         public Task<Guid?> GetScopeId(Guid roleId, CancellationToken cancellationToken)
             => context.Roles
                 .Where(x => x.Id == roleId) 
