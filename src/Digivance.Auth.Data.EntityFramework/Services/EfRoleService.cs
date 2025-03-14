@@ -99,6 +99,14 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
+        public Task<Guid?> GetScopeId(Guid roleId, CancellationToken cancellationToken)
+            => context.Roles
+                .Where(x => x.Id == roleId) 
+                .Select(x => (Guid?)x.ScopeId)      
+                .FirstOrDefaultAsync(cancellationToken);
+
+
+        /// <inheritdoc />
         public async Task<Role?> UpdateAsync(UpdateRole command, CancellationToken cancellationToken)
         {
             var role = await context.Roles

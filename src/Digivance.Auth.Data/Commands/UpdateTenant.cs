@@ -30,6 +30,7 @@ namespace Digivance.Auth.Data.Commands
         public const string ERR_TENANTID_NOTFOUND = "No tenant found for this tenant id";
         public const string ERR_TENANTNAME_LENGTH = "Tenant name must be 100 characters or less";
         public const string ERR_TENANTNAME_UNIQUE = "An Tenant already exists with this name";
+        public const string ERR_TENANT_NAME_EMPTY = "Tenant name is required";
 
         private readonly ITenantService tenantService;
 
@@ -54,6 +55,7 @@ namespace Digivance.Auth.Data.Commands
             // Name must be provided and be unique
             RuleFor(x => x.Name)
                 .NotEmpty()
+                    .WithMessage(ERR_TENANT_NAME_EMPTY)
                 .MaximumLength(100)
                     .WithMessage(ERR_TENANTNAME_LENGTH)
                 .MustAsync(BeUniqueTenantname)

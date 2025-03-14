@@ -44,6 +44,7 @@ namespace Digivance.Auth.Data.Commands
         public const string ERR_SCOPE_MUST_EXISTS = "Scope must exist, or be omitted for global";
         public const string ERR_TENANT_MUST_EXIST = "A tenant was not found with this id";
         public const string ERR_ROLENAME_LENGTH = "Role name must be 100 characters or less";
+        public const string ERR_ROLE_NAME_EMPTY = "Role name is required";
 
         private readonly IRoleService roleService;
         private readonly IScopeService scopeService;
@@ -67,6 +68,7 @@ namespace Digivance.Auth.Data.Commands
             // Name must be provided and be unique per scope id
             RuleFor(x => x.Name)
                 .NotEmpty()
+                    .WithMessage(ERR_ROLE_NAME_EMPTY)
                 .MaximumLength(100)
                     .WithMessage(ERR_ROLENAME_LENGTH)
                 .MustAsync(BeUniqueNamePerScopeAsync)

@@ -63,6 +63,14 @@ namespace Digivance.Auth.Data.Services
         public Task<Role?> GetByNameAsync(Guid? scopeId, string name, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Returns a ScopeId through roleId of role
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Returns scopeId</returns>
+        public Task<Guid?> GetScopeId(Guid roleId, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updates an existing Role based on the provided unique id and the update command
         /// </summary>
         /// <param name="id">Unique id of the Role to update</param>

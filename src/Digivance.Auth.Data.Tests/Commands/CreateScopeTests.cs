@@ -135,7 +135,7 @@ namespace Digivance.Auth.Data.Tests.Commands
             var res = await validator.ValidateAsync(command, default);
 
             Assert.That(res.IsValid, Is.False);
-            Assert.That(res.Errors.All(x => x.ErrorMessage == "'Name' must not be empty."), Is.True);
+            Assert.That(res.Errors.All(x => x.ErrorMessage == CreateScopeValidator.ERR_SCOPE_NAME_EMPTY), Is.True);
         }
 
         [Test]
