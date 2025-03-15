@@ -25,22 +25,6 @@ namespace Digivance.Auth.Data.Services
         public Task DeleteByIdAsync(Guid tenantId, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Returns a tenant by it's name
-        /// </summary>
-        /// <param name="name">Unique name of the tenant to get</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Tenant if found or null</returns>
-        public Task<Tenant?> GetByNameAsync(string name, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Returns a tenant by it's id
-        /// </summary>
-        /// <param name="tenantId">Unique id of the tenant to get</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Tenant if found or null</returns>
-        public Task<Tenant?> GetByIdAsync(Guid tenantId, CancellationToken cancellationToken);
-
-        /// <summary>
         /// Ensures that the tenant id exists
         /// </summary>
         /// <param name="id">Unique id of the tenant to check</param>
@@ -57,11 +41,27 @@ namespace Digivance.Auth.Data.Services
         public Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Returns a tenant by it's id
+        /// </summary>
+        /// <param name="tenantId">Unique id of the tenant to get</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Tenant if found or null</returns>
+        public Task<Tenant?> GetByIdAsync(Guid tenantId, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns a tenant by it's name
+        /// </summary>
+        /// <param name="name">Unique name of the tenant to get</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Tenant if found or null</returns>
+        public Task<Tenant?> GetByNameAsync(string name, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Update an existing tenant
         /// </summary>
         /// <param name="command">The update tenant command</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The updated tenant</returns>
-        public Task<Tenant> UpdateAsync(Guid id, UpdateTenant command, CancellationToken cancellationToken);
+        public Task<Tenant> UpdateAsync(UpdateTenant command, CancellationToken cancellationToken);
     }
 }

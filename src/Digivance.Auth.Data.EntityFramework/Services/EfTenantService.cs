@@ -113,9 +113,11 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Tenant> UpdateAsync(Guid id, UpdateTenant command, CancellationToken cancellationToken)
+        public async Task<Tenant> UpdateAsync(UpdateTenant command, CancellationToken cancellationToken)
         {
-            var tenant = await GetByIdAsync(id, cancellationToken);
+            var tenant = await context.Tenants
+               .Where(x => x.Id == command.Id)
+               .FirstOrDefaultAsync(cancellationToken);
 
             if (tenant == null)
                 return null;
