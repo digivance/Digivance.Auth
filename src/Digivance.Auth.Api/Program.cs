@@ -63,6 +63,7 @@ namespace Digivance.Auth.Api
                 .UseAuthEndpointV1()
                 .UseHealthEndpointV1()
                 .UseTenantEndpointV1()
+                .UseScopeEndpointV1()
                 .UseUserEndpointV1();
 
             // Swagger
@@ -118,6 +119,7 @@ namespace Digivance.Auth.Api
                 .AddAuthEndpointV1()
                 .AddHealthEndpointV1()
                 .AddTenantEndpointV1()
+                .AddScopeEndpointV1()
                 .AddUserEndpointV1();
 
             // Swagger
