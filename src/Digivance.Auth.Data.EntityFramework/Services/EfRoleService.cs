@@ -85,7 +85,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Role?> GetByNameAsync(Guid? scopeId, string name, CancellationToken cancellationToken)
+        public async Task<Role?> GetByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken)
         {
             var role = await context.Roles
                 .Where(x => x.ScopeId == scopeId)

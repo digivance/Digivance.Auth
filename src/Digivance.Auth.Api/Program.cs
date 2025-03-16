@@ -1,9 +1,11 @@
 using Asp.Versioning;
 using Digivance.Auth.Api.Endpoints;
 using Digivance.Auth.Api.Middleware;
+using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework;
 using Digivance.Auth.Data.EntityFramework.Contexts;
 using Digivance.Auth.Data.EntityFramework.Entities;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -64,6 +66,7 @@ namespace Digivance.Auth.Api
                 .UseHealthEndpointV1()
                 .UseTenantEndpointV1()
                 .UseScopeEndpointV1()
+                .UseRoleEndpointV1()
                 .UseUserEndpointV1();
 
             // Swagger
@@ -114,12 +117,24 @@ namespace Digivance.Auth.Api
                 .AddScoped<EntityMapper>()
                 .AddEndpointsApiExplorer();
 
+            // Validators
+            services.AddScoped<IValidator<CreateScope>, CreateScopeValidator>();
+            services.AddScoped<IValidator<CreateTenant>, CreateTenantValidator>();
+            services.AddScoped<IValidator<CreateUser>, CreateUserValidator>();
+            services.AddScoped<IValidator<CreateRole>, CreateRoleValidator>();
+
+            services.AddScoped<IValidator<UpdateScope>, UpdateScopeValidator>();
+            services.AddScoped<IValidator<UpdateTenant>, UpdateTenantValidator>();
+            services.AddScoped<IValidator<UpdateUser>, UpdateUserValidator>();
+            services.AddScoped<IValidator<UpdateRole>, UpdateRoleValidator>();
+
             // Endpoints
             services
                 .AddAuthEndpointV1()
                 .AddHealthEndpointV1()
                 .AddTenantEndpointV1()
                 .AddScopeEndpointV1()
+                .AddRoleEndpointV1()
                 .AddUserEndpointV1();
 
             // Swagger

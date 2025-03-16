@@ -1,6 +1,7 @@
 ﻿
 
 using Asp.Versioning;
+using Digivance.Auth.Api.Middleware;
 using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework.Services;
 using Digivance.Auth.Data.Services;
@@ -48,6 +49,7 @@ namespace Digivance.Auth.Api.Endpoints
             route
                 .MapPost("/", CreateAsync)
                 .HasApiVersion(version)
+                .Validate<CreateTenant>()
                 .WithOpenApi(opt => new(opt) { Description = "Create a new tenant account", OperationId = "Createtenant" });
 
             route
@@ -78,6 +80,7 @@ namespace Digivance.Auth.Api.Endpoints
             route
                 .MapPut("/", UpdateAsync)
                 .HasApiVersion(version)
+                .Validate<UpdateTenant>()
                 .WithOpenApi(opt => new(opt) { Description = "Update an existing tenant account", OperationId = "Updatetenant" });
 
             return app;

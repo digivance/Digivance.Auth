@@ -19,11 +19,6 @@ namespace Digivance.Auth.Data.Commands
         public string Name { get; set; } = "";
 
         /// <summary>
-        /// Optional collection of unique id's of Permissions to assign to this role
-        /// </summary>
-        public ICollection<Guid>? PermissionIds { get; set; }
-
-        /// <summary>
         /// Required, the unique if of the scope to create this role in
         /// </summary>
         public Guid ScopeId { get; set; }

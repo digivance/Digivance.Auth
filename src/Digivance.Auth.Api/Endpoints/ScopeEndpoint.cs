@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Digivance.Auth.Api.Middleware;
 using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework.Services;
 using Digivance.Auth.Data.Services;
@@ -47,6 +48,7 @@ namespace Digivance.Auth.Api.Endpoints
             route
                 .MapPost("/", CreateAsync)
                 .HasApiVersion(version)
+                .Validate<CreateScope>()
                 .WithOpenApi(opt => new(opt) { Description = "Create a new scope", OperationId = "Createscope" });
 
             route
@@ -77,6 +79,7 @@ namespace Digivance.Auth.Api.Endpoints
             route
                 .MapPut("/", UpdateAsync)
                 .HasApiVersion(version)
+                .Validate<UpdateScope>()
                 .WithOpenApi(opt => new(opt) { Description = "Update an existing scope account", OperationId = "Updatescope" });
 
             return app;
