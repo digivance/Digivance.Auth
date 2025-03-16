@@ -60,7 +60,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="name">Unique (per Role) name of the Role to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Role model or null if not found</returns>
-        public Task<Role?> GetByNameAsync(Guid? scopeId, string name, CancellationToken cancellationToken);
+        public Task<Role?> GetByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a ScopeId through roleId of role
