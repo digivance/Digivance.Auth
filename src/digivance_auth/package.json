@@ -1,7 +1,5 @@
 {
-  "name": "@digivance-auth",
   "private": true,
-  "version": "0.1.0",
   "scripts": {
     "build": "pnpm --filter=@digivance-auth/app run build",
     "dev": "pnpm --filter=@digivance-auth/app run dev",

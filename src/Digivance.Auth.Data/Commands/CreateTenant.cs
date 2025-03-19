@@ -1,9 +1,11 @@
 ﻿using Digivance.Auth.Data.Services;
 using FluentValidation;
-using System.Net.Mail;
 
 namespace Digivance.Auth.Data.Commands
 {
+    /// <summary>
+    /// Command to create a new tenant
+    /// </summary>
     public record CreateTenant
     {
         /// <summary>
