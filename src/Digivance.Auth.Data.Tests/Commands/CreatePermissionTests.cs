@@ -18,7 +18,7 @@ namespace Digivance.Auth.Data.Tests.Commands
             var mock = new Mock<IPermissionService>();
 
             mock
-                .Setup(x => x.ExistsByNameAsync(It.IsAny<Guid?>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Setup(x => x.ExistsAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid?>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(returnsTrue));
 
             return mock.Object;
@@ -41,46 +41,30 @@ namespace Digivance.Auth.Data.Tests.Commands
         }
 
         /// <summary>
-        /// Helper method to build a mock ITenantService. Will return returnsTrue when you call ExistsAsync
-        /// </summary>
-        /// <param name="returnsTrue">The value to return for ExistsAsync</param>
-        /// <returns>A mock implementation of ITenantService</returns>
-        private ITenantService GetTenantService(bool returnsTrue)
-        {
-            var mock = new Mock<ITenantService>();
-
-            mock
-                .Setup(x => x.ExistsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(returnsTrue));
-
-            return mock.Object;
-        }
-
-        /// <summary>
         /// Helper because multiple tests want the validator to just assume passing conditions for
         /// the service methods.  These 3 services will always "pass"
         /// </summary>
         /// <returns>The three services needed to construct the validator</returns>
-        private (IPermissionService, IScopeService, ITenantService) GetPassingServices()
+        private (IPermissionService, IScopeService) GetPassingServices()
         {
             return (
                 GetPermissionService(false),
-                GetScopeService(true),
-                GetTenantService(true)
+                GetScopeService(true)
             );
         }
 
         [Test]
         public async Task Can_BeValid()
         {
-            var (p,s,t) = GetPassingServices();
-            var validator = new CreatePermissionValidator(p, s, t);
+            var (p,s) = GetPassingServices();
+            var validator = new CreatePermissionValidator(p, s);
 
             var command = new CreatePermission
             {
                 Description = "Valid description",
-                Name = "Irrelevant to this test",
-                TenantId = Guid.NewGuid() // doesn't matter mocked service will pass it
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             var res = await validator.ValidateAsync(command, default);
@@ -91,8 +75,8 @@ namespace Digivance.Auth.Data.Tests.Commands
         [Test]
         public async Task CanFail_LongDescription()
         {
-            var (p, s, t) = GetPassingServices();
-            var validator = new CreatePermissionValidator(p, s, t);
+            var (p, s) = GetPassingServices();
+            var validator = new CreatePermissionValidator(p, s);
 
             var description = "";
             for (var i = 0; i <= 4001; i++)
@@ -101,8 +85,9 @@ namespace Digivance.Auth.Data.Tests.Commands
             var command = new CreatePermission
             {
                 Description = description,
-                Name = "Irrelevant to this test",
-                TenantId = Guid.NewGuid() // doesn't matter mocked service will pass it
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             var res = await validator.ValidateAsync(command, default);
@@ -112,90 +97,25 @@ namespace Digivance.Auth.Data.Tests.Commands
         }
 
         [Test]
-        public async Task CanFail_MissingName()
-        {
-            var (p, s, t) = GetPassingServices();
-            var validator = new CreatePermissionValidator(p, s, t);
-
-            var command = new CreatePermission
-            {
-                Name = "",
-                TenantId = Guid.NewGuid() // doesn't matter mocked service will pass it
-            };
-
-            var res = await validator.ValidateAsync(command, default);
-
-            Assert.That(res.IsValid, Is.False);
-            Assert.That(res.Errors.All(x => x.ErrorMessage == "'Name' must not be empty."), Is.True);
-        }
-
-        [Test]
-        public async Task CanFail_DuplicateName()
-        {
-            // This p (permission service) will say the permission already exists which should
-            // cause our validator to fail
-            var p = GetPermissionService(true);
-            var s = GetScopeService(true);
-            var t = GetTenantService(true);
-            var validator = new CreatePermissionValidator(p, s, t);
-
-            var command = new CreatePermission
-            {
-                Name = "AlreadyExists",
-                TenantId = Guid.NewGuid() // doesn't matter mocked service will pass it
-            };
-
-            var res = await validator.ValidateAsync(command, default);
-
-            Assert.That(res.IsValid, Is.False);
-            Assert.That(res.Errors.All(x => x.ErrorMessage == CreatePermissionValidator.ERR_PERMISSION_NAME_EXISTS), Is.True);
-        }
-
-        [Test]
         public async Task CanFail_InvalidScope()
         {
             var p = GetPermissionService(false);
             // This s (scope service) will say the scope doesn't exists which should
             // cause our validator to fail
             var s = GetScopeService(false);
-            var t = GetTenantService(true);
-            var validator = new CreatePermissionValidator(p, s, t);
+            var validator = new CreatePermissionValidator(p, s);
 
             var command = new CreatePermission
             {
-                Name = "AlreadyExists",
-                ScopeId = Guid.NewGuid(),
-                TenantId = Guid.NewGuid() // doesn't matter mocked service will pass it
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             var res = await validator.ValidateAsync(command, default);
 
             Assert.That(res.IsValid, Is.False);
             Assert.That(res.Errors.All(x => x.ErrorMessage == CreatePermissionValidator.ERR_SCOPE_MUST_EXISTS), Is.True);
-        }
-
-
-        [Test]
-        public async Task CanFail_InvalidTenant()
-        {
-            var p = GetPermissionService(false);
-            var s = GetScopeService(true);
-            // This t (tenant service) will say the tenant doesn't exists which should
-            // cause our validator to fail
-            var t = GetTenantService(false);
-            var validator = new CreatePermissionValidator(p, s, t);
-
-            var command = new CreatePermission
-            {
-                Name = "AlreadyExists",
-                ScopeId = Guid.NewGuid(),
-                TenantId = Guid.NewGuid() // omg the validator will actually fail this finally
-            };
-
-            var res = await validator.ValidateAsync(command, default);
-
-            Assert.That(res.IsValid, Is.False);
-            Assert.That(res.Errors.All(x => x.ErrorMessage == CreatePermissionValidator.ERR_TENANT_MUST_EXIST), Is.True);
         }
     }
 }

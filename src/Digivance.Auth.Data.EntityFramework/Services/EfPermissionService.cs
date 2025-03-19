@@ -4,6 +4,7 @@ using Digivance.Auth.Data.EntityFramework.Entities;
 using Digivance.Auth.Data.Models;
 using Digivance.Auth.Data.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Digivance.Auth.Data.EntityFramework.Services
 {
@@ -30,7 +31,9 @@ namespace Digivance.Auth.Data.EntityFramework.Services
             var permission = new PermissionEntity
             {
                 Description = command.Description,
-                Name = command.Name,
+                EntityAccess = command.EntityAccess,
+                EntityId = command.EntityId,
+                EntityType = command.EntityType,
                 ScopeId = command.ScopeId
             };
 
@@ -61,14 +64,16 @@ namespace Digivance.Auth.Data.EntityFramework.Services
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public Task<bool> ExistsByNameAsync(Guid? scopeId, string name, CancellationToken cancellationToken)
+        public Task<bool> ExistsAsync(Guid scopeId, string entityAccess, string entityType, Guid? entityId, CancellationToken cancellationToken)
             => context.Permissions
                 .Where(x => x.ScopeId == scopeId)
-                .Where(x => x.Name == name)
+                .Where(x => x.EntityAccess == entityAccess)
+                .Where (x => x.EntityType == entityType)
+                .Where(x=> x.EntityId == entityId)
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public async Task<Permission?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Permission?> GetAsync(Guid id, CancellationToken cancellationToken)
         {
             var permission = await context.Permissions
                 .Where(x => x.Id == id)
@@ -81,17 +86,61 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Permission?> GetByNameAsync(Guid? scopeId, string name, CancellationToken cancellationToken)
+        public async Task<Permission?> GetAsync(Guid scopeId, string entityAccess, string entityType, Guid? entityId, CancellationToken cancellationToken)
         {
             var permission = await context.Permissions
                 .Where(x => x.ScopeId == scopeId)
-                .Where(x => x.Name == name)
+                .Where(x => x.EntityAccess == entityAccess)
+                .Where(x => x.EntityType == entityType)
+                .Where(x => x.EntityId == entityId)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (permission == null)
                 return null;
 
             return mapper.Map<Permission>(permission);
+        }
+
+        /// <inheritdoc />
+        public Task<bool> HasPermissionAsync(ClaimsPrincipal principal, Guid permissionId, CancellationToken cancellationToken)
+            => context.Permissions
+                .Where(x => x.Id == permissionId)
+                .AnyAsync(cancellationToken);
+
+        /// <inheritdoc />
+        public async Task<bool> HasPermissionAsync(ClaimsPrincipal principal, Guid scopeId, string entityAccess, string entityType, Guid? entityId, CancellationToken cancellationToken)
+        {
+            // If entity id provided, try to check for explicit permission
+            if (entityId != null)
+            {
+                // Get the explicit permission
+                var explicitPermission = await context.Permissions
+                    .Where(x => x.EntityAccess == entityAccess)
+                    .Where(x => x.EntityType == entityType)
+                    .Where(x => x.EntityId == entityId)
+                    .FirstOrDefaultAsync(cancellationToken);
+
+                // If we found the explicitPermission and the principal has a "permissions" claim
+                // with for the explicitPermission.Id, we return true
+                if (explicitPermission != null && principal.Claims.Where(x => Guid.Parse(x.Value) == explicitPermission.Id).Any())
+                    return true;
+            }
+
+            // If entity id not provided, or principal does not have the explicit
+            // permission, we check to see if the principal has the null entityId
+            // permission in this scope (e.g. global entity type access in this scope).
+            var scopePermission = await context.Permissions
+                .Where(x => x.EntityAccess == entityAccess)
+                .Where(x => x.EntityType == entityType)
+                .Where(x => x.EntityId == null)
+                .Where(x => x.ScopeId == scopeId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (scopePermission != null && principal.Claims.Where(x => Guid.Parse(x.Value) == scopePermission.Id).Any())
+                return true;
+
+            // Nope, principal aint got no permission
+            return false;
         }
 
         /// <inheritdoc />

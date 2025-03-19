@@ -45,7 +45,10 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                         Permission = new PermissionEntity
                         {
                             Description = "Explicit permission",
-                            Name = "Explicit"
+                            EntityAccess = "Update",
+                            EntityType = "User",
+                            EntityId = Guid.NewGuid(),
+                            ScopeId = Guid.NewGuid()
                         }
                     }
                 ],
@@ -62,7 +65,10 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                                     Permission = new PermissionEntity
                                     {
                                         Description = "Role assigned permission",
-                                        Name = "Assigned"
+                                        EntityAccess = "Delete",
+                                        EntityType = "User",
+                                        EntityId = Guid.NewGuid(),
+                                        ScopeId = Guid.NewGuid()
                                     }
                                 }
                             ]

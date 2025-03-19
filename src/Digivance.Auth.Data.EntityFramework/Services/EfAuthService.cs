@@ -56,7 +56,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
     public class EfAuthService(AuthContext authContext, IOptions<EfAuthServiceOptions> options) : IAuthService
     {
         private readonly AuthContext authContext = authContext;
-        private EfAuthServiceOptions options = options.Value;
+        private readonly EfAuthServiceOptions options = options.Value;
 
         /// <inheritdoc />
         public async Task<AuthenticationResult> AuthenticateAsync(AuthenticateUserCredentials command, CancellationToken cancellationToken)
@@ -134,7 +134,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
                     RefreshExpires = DateTime.UtcNow.Add(options.RefreshExpiry)
                 };
             }
-            catch (Exception ex)
+            catch 
             {
                 // Maybe should log it?
                 throw new ValidationException("Failed to refresh authentication token", failures);
@@ -170,10 +170,10 @@ namespace Digivance.Auth.Data.EntityFramework.Services
                 .Select(x => x.Id)
                 .ToListAsync(cancellationToken);
 
-            if (roleIds.Any())
+            if (roleIds.Count != 0)
                 claims.Add("roles", roleIds);
 
-            if (permissionsIds.Any())
+            if (permissionsIds.Count != 0)
                 claims.Add("permissions", permissionsIds);
 
             var signingBytes = Convert.FromBase64String(options.JwtSigningKey);

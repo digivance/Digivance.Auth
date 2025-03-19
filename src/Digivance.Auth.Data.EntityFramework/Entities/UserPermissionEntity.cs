@@ -73,12 +73,12 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Permission.Id))
                 .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.Permission.ModifiedBy))
                 .ForMember(dest => dest.ModifiedOn, opt => opt.MapFrom(src => src.Permission.ModifiedOn))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Permission.Name))
+                .ForMember(dest => dest.EntityAccess, opt => opt.MapFrom(src => src.Permission.EntityAccess))
+                .ForMember(dest => dest.EntityId, opt => opt.MapFrom(src => src.Permission.EntityId))
+                .ForMember(dest => dest.EntityType, opt => opt.MapFrom(src => src.Permission.EntityType))
                 .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.Permission.Roles))
                 .ForMember(dest => dest.Scope, opt => opt.MapFrom(src => src.Permission.Scope))
                 .ForMember(dest => dest.ScopeId, opt => opt.MapFrom(src => src.Permission.ScopeId))
-                .ForMember(dest => dest.Tenant, opt => opt.MapFrom(src => src.Permission.Tenant))
-                .ForMember(dest => dest.TenantId, opt => opt.MapFrom(src => src.Permission.TenantId))
                 .PreserveReferences();
 
             cfg.CreateMap<UserPermissionEntity, User>()

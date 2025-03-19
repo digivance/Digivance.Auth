@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Digivance.Auth.Api.Middleware;
 using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework.Services;
 using Digivance.Auth.Data.Services;
@@ -45,6 +46,7 @@ namespace Digivance.Auth.Api.Endpoints
 
             route
                 .MapPost("/", CreateAsync)
+                .Validate<CreateUser>()
                 .HasApiVersion(version)
                 .WithOpenApi(opt => new(opt) { Description = "Create a new user account", OperationId = "CreateUser" });
 
@@ -85,6 +87,7 @@ namespace Digivance.Auth.Api.Endpoints
 
             route
                 .MapPut("/", UpdateAsync)
+                .Validate<UpdateUser>()
                 .HasApiVersion(version)
                 .WithOpenApi(opt => new(opt) { Description = "Update an existing user account", OperationId = "UpdateUser" });
 
@@ -238,18 +241,18 @@ namespace Digivance.Auth.Api.Endpoints
         /// </summary>
         /// <param name="tenantId">Optional unique id of the tenant to check in</param>
         /// <param name="username">Username of the user account to get</param>
-        /// <param name="service">The IUserService to check in</param>
+        /// <param name="userService">The IUserService to check in</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Ok(true) or NotFound(id)</returns>
         public static async Task<IResult> GetByUsernameAsync
         (
             [FromRoute] Guid? tenantId,
             [FromRoute] string username,
-            [FromServices] IUserService service,
+            [FromServices] IUserService userService,
             CancellationToken cancellationToken
         )
         {
-            var user = await service.GetByUsernameAsync(tenantId, username, cancellationToken);
+            var user = await userService.GetByUsernameAsync(tenantId, username, cancellationToken);
             return user != null ?
                 Results.Ok(user) :
                 Results.NotFound(username);

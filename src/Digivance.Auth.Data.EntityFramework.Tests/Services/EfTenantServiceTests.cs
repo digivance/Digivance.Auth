@@ -171,11 +171,12 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
             var updateCommand = new UpdateTenant
             {
-                Name = "newTenant",
-                Description = "abc123456789"
+                Description = "abc123456789",
+                Id = newTenant.Id,
+                Name = "newTenant"
             };
 
-            var updatedTenant = await service.UpdateAsync(newTenant.Id, updateCommand, default);
+            var updatedTenant = await service.UpdateAsync(updateCommand, default);
             await service.DeleteByIdAsync(newTenant.Id, default);
 
             Assert.Multiple(() =>

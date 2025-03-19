@@ -71,9 +71,6 @@ namespace Digivance.Auth.Data.EntityFramework.Entities
             builder.HasIndex(x => x.Name)
                 .IsUnique(true);
 
-            builder.HasMany(x => x.Permissions)
-                .WithOne(x => x.Tenant);
-
             builder.HasMany(x => x.Roles)
                 .WithOne(x => x.Tenant);
 
