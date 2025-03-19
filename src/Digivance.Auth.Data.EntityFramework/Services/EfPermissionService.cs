@@ -44,7 +44,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
             var permission = await context.Permissions
                 .Where(x => x.Id == id)
@@ -144,14 +144,11 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Permission?> UpdateAsync(Guid id, UpdatePermission command, CancellationToken cancellationToken)
+        public async Task<Permission?> UpdateAsync(UpdatePermission command, CancellationToken cancellationToken)
         {
             var permission = await context.Permissions
-                .Where(x => x.Id == id)
+                .Where(x => x.Id == command.Id)
                 .FirstOrDefaultAsync(cancellationToken);
-
-            if (permission == null)
-                return null;
 
             permission.Description = command.Description;
             await context.SaveChangesAsync(cancellationToken);

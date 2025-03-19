@@ -24,7 +24,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="id">Unique id of the permission record to delete</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Task to await, or don't</returns>
-        public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
+        public Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 
         /// <summary>
         /// Checks to see if a permission exists by this unique id
@@ -90,10 +90,9 @@ namespace Digivance.Auth.Data.Services
         /// <summary>
         /// Updates an existing Permission based on the provided unique id and the update command
         /// </summary>
-        /// <param name="id">Unique id of the permission to update</param>
         /// <param name="command">Update command to apply</param>
         /// <param name="cancellationToken">Cancellation Token</param>
         /// <returns>Permission model or null if not found</returns>
-        public Task<Permission?> UpdateAsync(Guid id, UpdatePermission command, CancellationToken cancellationToken);
+        public Task<Permission?> UpdateAsync(UpdatePermission command, CancellationToken cancellationToken);
     }
 }

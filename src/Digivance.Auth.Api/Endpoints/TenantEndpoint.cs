@@ -119,14 +119,14 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var tenant = await tenantService.GetByIdAsync(tenantId, cancellationToken);
+            var tenant = await tenantService.GetAsync(tenantId, cancellationToken);
             if (tenant == null)
                 return Results.Ok();
 
             if (!await permissionService.HasPermissionAsync(principal, new Guid(), "DELETE", "TENANT", tenantId, cancellationToken))
                 throw new UnauthorizedAccessException();
 
-            await tenantService.DeleteByIdAsync(tenantId, cancellationToken);
+            await tenantService.DeleteAsync(tenantId, cancellationToken);
             return Results.Ok();
         }
 
@@ -164,7 +164,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var exists = await service.ExistsByNameAsync(tenantname, cancellationToken);
+            var exists = await service.ExistsAsync(tenantname, cancellationToken);
             return exists ?
                 Results.Ok(true) :
                 Results.NotFound(tenantname);
@@ -184,7 +184,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var tenant = await service.GetByIdAsync(tenantId, cancellationToken);
+            var tenant = await service.GetAsync(tenantId, cancellationToken);
             return tenant != null ?
                 Results.Ok(tenant) :
                 Results.NotFound(tenantId);
@@ -204,7 +204,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var tenant = await service.GetByNameAsync(tenantname, cancellationToken);
+            var tenant = await service.GetAsync(tenantname, cancellationToken);
             return tenant != null ?
                 Results.Ok(tenant) :
                 Results.NotFound(tenantname);

@@ -40,7 +40,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteByIdAsync(Guid tenantId, CancellationToken cancellationToken)
+        public async Task DeleteAsync(Guid tenantId, CancellationToken cancellationToken)
         {
             var tenant = await context.Tenants
                 .Where(x => x.Id == tenantId)
@@ -71,13 +71,13 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken)
+        public Task<bool> ExistsAsync(string name, CancellationToken cancellationToken)
             => context.Tenants
                 .Where(x => x.Name == name)
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public async Task<Tenant?> GetByIdAsync(Guid tenantId, CancellationToken cancellationToken)
+        public async Task<Tenant?> GetAsync(Guid tenantId, CancellationToken cancellationToken)
         {
             var tenant = await context.Tenants
               .Where(x => x.Id == tenantId)
@@ -90,7 +90,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Tenant?> GetByNameAsync(string name, CancellationToken cancellationToken)
+        public async Task<Tenant?> GetAsync(string name, CancellationToken cancellationToken)
         {
             var tenant = await context.Tenants
                .Where(x => x.Name == name)

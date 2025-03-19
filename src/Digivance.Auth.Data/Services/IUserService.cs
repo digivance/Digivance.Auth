@@ -22,7 +22,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="userId">Unique id of the user to delete</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Task to await</returns>
-        public Task DeleteByIdAsync(Guid userId, CancellationToken cancellationToken);
+        public Task DeleteAsync(Guid userId, CancellationToken cancellationToken);
 
         /// <summary>
         /// Checks to see if this is a valid user id

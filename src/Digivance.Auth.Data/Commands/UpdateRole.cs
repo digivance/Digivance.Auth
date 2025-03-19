@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Digivance.Auth.Data.Commands
 {
-    public class UpdateRole
+    public record UpdateRole
     {
         /// <summary>
         /// User friendly description of the role to Update
@@ -93,7 +93,7 @@ namespace Digivance.Auth.Data.Commands
             if (scopeId == null)
                 return false;
 
-            return !await roleService.ExistsByNameAsync(scopeId.Value, name, cancellationToken);
+            return !await roleService.ExistsAsync(scopeId.Value, name, cancellationToken);
         }
     }
 }

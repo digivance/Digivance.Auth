@@ -58,7 +58,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             newScope.TenantId = tenantId;
             await context.SaveChangesAsync(default);
 
-            await service.DeleteByIdAsync(newScope.Id, default);
+            await service.DeleteAsync(newScope.Id, default);
 
             Assert.Multiple(() =>
             {
@@ -83,8 +83,8 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var newScope = await service.CreateAsync(command, default);
-            await service.DeleteByIdAsync(newScope.Id, default);
-            var deletedScope = await service.GetByIdAsync(newScope.Id, default);
+            await service.DeleteAsync(newScope.Id, default);
+            var deletedScope = await service.GetAsync(newScope.Id, default);
 
             Assert.That(deletedScope, Is.Null);
         }
@@ -102,7 +102,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var newScope = await service.CreateAsync(command, default);
 
             var exists = await service.ExistsAsync(newScope.Id, default);
-            await service.DeleteByIdAsync(newScope.Id, default);
+            await service.DeleteAsync(newScope.Id, default);
 
             Assert.That(exists, Is.True);
         }
@@ -118,8 +118,8 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var newScope = await service.CreateAsync(command, default);
-            var exists = await service.ExistsByNameAsync(tenantId, newScope.Name, default);
-            await service.DeleteByIdAsync(newScope.Id, default);
+            var exists = await service.ExistsAsync(tenantId, newScope.Name, default);
+            await service.DeleteAsync(newScope.Id, default);
 
             Assert.That(exists, Is.True);
         }
@@ -135,8 +135,8 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var newScope = await service.CreateAsync(command, default);
-            var model = await service.GetByIdAsync(newScope.Id, default);
-            await service.DeleteByIdAsync(newScope.Id, default);
+            var model = await service.GetAsync(newScope.Id, default);
+            await service.DeleteAsync(newScope.Id, default);
 
             Assert.That(model, Is.Not.Null);
             Assert.Multiple(() =>
@@ -161,8 +161,8 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var newScope = await service.CreateAsync(command, default);
-            var model = await service.GetByNameAsync(tenantId, newScope.Name, default);
-            await service.DeleteByIdAsync(newScope.Id, default);
+            var model = await service.GetAsync(tenantId, newScope.Name, default);
+            await service.DeleteAsync(newScope.Id, default);
 
             Assert.That(model, Is.Not.Null);
             Assert.Multiple(() =>
@@ -196,7 +196,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var updatedScope = await service.UpdateAsync(updateCommand, default);
-            await service.DeleteByIdAsync(newScope.Id, default);
+            await service.DeleteAsync(newScope.Id, default);
 
             Assert.Multiple(() =>
             {

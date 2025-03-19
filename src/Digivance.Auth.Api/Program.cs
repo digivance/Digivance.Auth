@@ -69,6 +69,7 @@ namespace Digivance.Auth.Api
                 .UseTenantEndpointV1()
                 .UseScopeEndpointV1()
                 .UseRoleEndpointV1()
+                .UsePermissionEndpointV1()
                 .UseUserEndpointV1();
 
             // Swagger
@@ -124,11 +125,13 @@ namespace Digivance.Auth.Api
             services.AddScoped<IValidator<CreateTenant>, CreateTenantValidator>();
             services.AddScoped<IValidator<CreateUser>, CreateUserValidator>();
             services.AddScoped<IValidator<CreateRole>, CreateRoleValidator>();
+            services.AddScoped<IValidator<CreatePermission>, CreatePermissionValidator>();
 
             services.AddScoped<IValidator<UpdateScope>, UpdateScopeValidator>();
             services.AddScoped<IValidator<UpdateTenant>, UpdateTenantValidator>();
             services.AddScoped<IValidator<UpdateUser>, UpdateUserValidator>();
             services.AddScoped<IValidator<UpdateRole>, UpdateRoleValidator>();
+            services.AddScoped<IValidator<UpdatePermission>, UpdatePermissionValidator>();
 
             // Temporary, remove when we .AddPermissionEndpointV1() below
             services
@@ -138,6 +141,7 @@ namespace Digivance.Auth.Api
             services
                 .AddAuthEndpointV1()
                 .AddHealthEndpointV1()
+                .AddPermissionEndpointV1()
                 .AddRoleEndpointV1()
                 .AddScopeEndpointV1()
                 .AddTenantEndpointV1()

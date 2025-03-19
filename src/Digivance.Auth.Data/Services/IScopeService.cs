@@ -20,7 +20,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="id">Unique id of the scope record to delete</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Task to await, or don't</returns>
-        public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
+        public Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 
         /// <summary>
         /// Checks to see if a scope exists by this unique id
@@ -37,7 +37,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="name">Unique (per scope) name to look for</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>True if a scope with this name exists within this tenant</returns>
-        public Task<bool> ExistsByNameAsync(Guid? tenantId, string name, CancellationToken cancellationToken);
+        public Task<bool> ExistsAsync(Guid? tenantId, string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a scope DTO model representing the requested scope by id
@@ -45,7 +45,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="id">Unique id of the scope to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>scope model or null if not found</returns>
-        public Task<Scope?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+        public Task<Scope?> GetAsync(Guid id, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a scope DTO model representing the requested scope by
@@ -55,7 +55,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="name">Unique (per scope) name of the scope to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>scope model or null if not found</returns>
-        public Task<Scope?> GetByNameAsync(Guid? tenantId, string name, CancellationToken cancellationToken);
+        public Task<Scope?> GetAsync(Guid? tenantId, string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates an existing scope based on the provided unique id and the update command
