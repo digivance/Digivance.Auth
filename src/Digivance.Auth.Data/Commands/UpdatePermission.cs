@@ -11,7 +11,7 @@ namespace Digivance.Auth.Data.Commands
         /// <summary>
         /// Human friendly description of this permission
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Id of the permission to update

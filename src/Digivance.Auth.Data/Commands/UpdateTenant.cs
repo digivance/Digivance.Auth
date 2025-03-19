@@ -3,17 +3,20 @@ using FluentValidation;
 
 namespace Digivance.Auth.Data.Commands
 {
+    /// <summary>
+    /// Command to update an existing tenant
+    /// </summary>
     public record UpdateTenant
     {
-        /// <summary>
-        /// Unique id of the tenant we want to update
-        /// </summary>
-        public Guid Id { get; set; }
-
         /// <summary>
         /// User friendly description of this tenant
         /// </summary>
         public string? Description { get; set; }
+
+        /// <summary>
+        /// Unique id of the tenant we want to update
+        /// </summary>
+        public Guid Id { get; set; }
 
         /// <summary>
         /// User friendly name of this tenant

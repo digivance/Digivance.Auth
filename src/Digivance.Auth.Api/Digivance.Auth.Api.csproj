@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <Title>Digivance Auth Service</Title>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Authors>dmayor, digivance</Authors>
     <Company>Digivance Technologies</Company>
     <Product>Digivance Auth Service</Product>

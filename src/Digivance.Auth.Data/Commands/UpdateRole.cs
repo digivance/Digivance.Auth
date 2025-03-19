@@ -1,14 +1,11 @@
-﻿using Digivance.Auth.Data.Models;
-using Digivance.Auth.Data.Services;
+﻿using Digivance.Auth.Data.Services;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Digivance.Auth.Data.Commands
 {
+    /// <summary>
+    /// Command to update an existing role
+    /// </summary>
     public record UpdateRole
     {
         /// <summary>
@@ -16,6 +13,9 @@ namespace Digivance.Auth.Data.Commands
         /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Unique id of the role to update
+        /// </summary>
         public Guid Id { get; set; }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace Digivance.Auth.Data.Commands
         public string Name { get; set; }
 
         /// <summary>
-        /// Required unique id of the tenant this scope exists in
+        /// Unique id of the tenant this scope exists in
         /// </summary>
         public Guid? TenantId { get; set; }
     }

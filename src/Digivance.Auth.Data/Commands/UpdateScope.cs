@@ -1,21 +1,22 @@
 ﻿using Digivance.Auth.Data.Services;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Digivance.Auth.Data.Commands
 {
+    /// <summary>
+    /// Command to update an existing Scope
+    /// </summary>
     public record UpdateScope
     {
-        public Guid Id { get; set; }
-
         /// <summary>
         /// Optional user friendly description of this scope
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
+
+        /// <summary>
+        /// Unique id of the scope to update
+        /// </summary>
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Required unique per tenant name of this scope
