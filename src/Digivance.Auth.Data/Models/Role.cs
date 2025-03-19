@@ -35,11 +35,11 @@ namespace Digivance.Auth.Data.Models
         /// <summary>
         /// The tenant this role belongs to
         /// </summary>
-        public Tenant Tenant { get; set; }
+        public Tenant? Tenant { get; set; }
 
         /// <summary>
         /// Unique id of the tenant this role belongs to
         /// </summary>
-        public Guid TenantId { get; set; }
+        public Guid? TenantId { get; set; }
     }
 }

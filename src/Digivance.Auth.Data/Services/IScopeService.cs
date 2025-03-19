@@ -37,7 +37,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="name">Unique (per scope) name to look for</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>True if a scope with this name exists within this tenant</returns>
-        public Task<bool> ExistsByNameAsync(Guid tenantId, string name, CancellationToken cancellationToken);
+        public Task<bool> ExistsByNameAsync(Guid? tenantId, string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a scope DTO model representing the requested scope by id

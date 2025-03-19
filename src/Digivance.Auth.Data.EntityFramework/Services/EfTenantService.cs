@@ -54,10 +54,21 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
-            => context.Tenants
-            .Where(x => x.Id == id)
-            .AnyAsync(cancellationToken);
+        public Task<bool> ExistsAsync(Guid? id, CancellationToken cancellationToken)
+        {
+            if (id == null)
+            {
+                return Task.FromResult(true);
+            }
+            else
+            {
+                var exists = context.Tenants
+                    .Where(x => x.Id == id)
+                    .AnyAsync(cancellationToken);
+
+                return exists;
+            }
+        }
 
         /// <inheritdoc />
         public Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken)
@@ -92,7 +103,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Tenant?> UpdateAsync(UpdateTenant command, CancellationToken cancellationToken)
+        public async Task<Tenant> UpdateAsync(UpdateTenant command, CancellationToken cancellationToken)
         {
             var tenant = await context.Tenants
               .Where(x => x.Id == command.Id)

@@ -48,10 +48,11 @@ namespace Digivance.Auth.Api.Endpoints
                 .MapPost("/", CreateAsync)
                 .Validate<CreateUser>()
                 .HasApiVersion(version)
+                .Validate<CreateUser>()
                 .WithOpenApi(opt => new(opt) { Description = "Create a new user account", OperationId = "CreateUser" });
 
             route
-                .MapDelete("/{userId:guid}", DeleteAsync)
+                .MapDelete("/{userId:Guid}", DeleteAsync)
                 .HasApiVersion(version)
                 .WithOpenApi(opt => new(opt) { Description = "Delete an existing user account", OperationId = "DeleteUser" });
 
@@ -61,27 +62,27 @@ namespace Digivance.Auth.Api.Endpoints
                 .WithOpenApi(opt => new(opt) { Description = "Check if a user account exists for this id", OperationId = "UserExists" });
 
             route
-                .MapGet("/email-exists/{email}/{tenantId:guid?}", ExistsByEmailAsync)
+                .MapGet("/email-exists/{email}/{tenantId:Guid?}", ExistsByEmailAsync)
                 .HasApiVersion(version)
                 .WithOpenApi(opt => new(opt) { Description = "Check if a user account exists for this email", OperationId = "UserExistsByEmail" });
 
             route
-                .MapGet("/username-exists/{username}/{tenantId:guid?}", ExistsByUsernameAsync)
+                .MapGet("/username-exists/{username}/{tenantId:Guid?}", ExistsByUsernameAsync)
                 .HasApiVersion(version)
                 .WithOpenApi(opt => new(opt) { Description = "Check if a user account exists for this username", OperationId = "UserExistsByUsername" });
 
             route
-                .MapGet("/by-email/{email}/{tenantId:guid?}", GetByEmailAsync)
+                .MapGet("/by-email/{email}/{tenantId:Guid?}", GetByEmailAsync)
                 .HasApiVersion(version)
                 .WithOpenApi(opt => new(opt) { Description = "Get a user by email address", OperationId = "GetUserByEmail" });
 
             route
-                .MapGet("/{userId:guid}", GetByIdAsync)
+                .MapGet("/{userId:Guid}", GetByIdAsync)
                 .HasApiVersion(version)
                 .WithOpenApi(opt => new(opt) { Description = "Get a user by unique id", OperationId = "GetUserById" });
 
             route
-                .MapGet("/by-username/{username}/{tenantId:guid?}", GetByUsernameAsync)
+                .MapGet("/by-username/{username}/{tenantId:Guid?}", GetByUsernameAsync)
                 .HasApiVersion(version)
                 .WithOpenApi(opt => new(opt) { Description = "Get a user by username", OperationId = "GetUserByUsername" });
 
@@ -89,6 +90,7 @@ namespace Digivance.Auth.Api.Endpoints
                 .MapPut("/", UpdateAsync)
                 .Validate<UpdateUser>()
                 .HasApiVersion(version)
+                .Validate<UpdateUser>()
                 .WithOpenApi(opt => new(opt) { Description = "Update an existing user account", OperationId = "UpdateUser" });
 
             return app;

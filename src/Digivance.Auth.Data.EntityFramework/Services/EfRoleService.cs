@@ -7,23 +7,17 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Digivance.Auth.Data.EntityFramework.Services
 {
     /// <summary>
-    /// Entity framework implementation of our IScopeService
+    /// Entity framework implementation of our IRoleService
     /// </summary>
     /// <param name="context">The AuthContext to use</param>
     /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
-    /// <remarks>
-    /// Standard constructor
-    /// </remarks>
-    /// <param name="context">The AuthContext to use</param>
-    /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
-    public class EfScopeService(AuthContext context, EntityMapper mapper) : IScopeService
+    public class EfRoleService(AuthContext context, EntityMapper mapper) : IRoleService
     {
         /// <summary>
         /// Internally used AuthContext
@@ -36,89 +30,97 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         private readonly EntityMapper mapper = mapper;
 
         /// <inheritdoc />
-        public async Task<Scope> CreateAsync(CreateScope command, CancellationToken cancellationToken)
+        public async Task<Role> CreateAsync(CreateRole command, CancellationToken cancellationToken)
         {
-            var scope = new ScopeEntity
+            var role = new RoleEntity
             {
                 Description = command.Description,
                 Name = command.Name,
-                TenantId = command.TenantId
+                ScopeId = command.ScopeId
             };
 
-            context.Scopes.Add(scope);
+            context.Roles.Add(role);
             await context.SaveChangesAsync(cancellationToken);
-            return mapper.Map<Scope>(scope);
+            return mapper.Map<Role>(role);
         }
 
         /// <inheritdoc />
         public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var scope = await context.Scopes
+            var role = await context.Roles
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (scope != null)
+            if (role != null)
             {
-                context.Scopes.Remove(scope);
+                context.Roles.Remove(role);
                 await context.SaveChangesAsync(cancellationToken);
             }
         }
 
         /// <inheritdoc />
         public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
-            => context.Scopes
+            => context.Roles
                 .Where(x => x.Id == id)
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public Task<bool> ExistsByNameAsync(Guid? tenantId, string name, CancellationToken cancellationToken)
-            => context.Scopes
-                .Where(x => x.TenantId == tenantId)
-                .Where(x => x.Name == name)
-                .AnyAsync(cancellationToken);
+        public Task<bool> ExistsByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken)
+            => context.Roles
+                    .Where(x => x.ScopeId == scopeId)
+                    .Where(x => x.Name == name)
+                    .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public async Task<Scope?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Role?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var scope = await context.Scopes
+            var role = await context.Roles
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (scope == null)
+            if (role == null)
                 return null;
 
-            return mapper.Map<Scope>(scope);
+            return mapper.Map<Role>(role);
         }
 
         /// <inheritdoc />
-        public async Task<Scope?> GetByNameAsync(Guid? tenantId, string name, CancellationToken cancellationToken)
+        public async Task<Role?> GetByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken)
         {
-            var scope = await context.Scopes
-                .Where(x => x.TenantId == tenantId)
+            var role = await context.Roles
+                .Where(x => x.ScopeId == scopeId)
                 .Where(x => x.Name == name)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (scope == null)
+            if (role == null)
                 return null;
 
-            return mapper.Map<Scope>(scope);
+            return mapper.Map<Role>(role);
         }
 
         /// <inheritdoc />
-        public async Task<Scope?> UpdateAsync(UpdateScope command, CancellationToken cancellationToken)
-        {
-            var scope = await context.Scopes
-               .Where(x => x.Id == command.Id)
-               .FirstOrDefaultAsync(cancellationToken);
+        public Task<Guid?> GetScopeId(Guid roleId, CancellationToken cancellationToken)
+            => context.Roles
+                .Where(x => x.Id == roleId) 
+                .Select(x => (Guid?)x.ScopeId)      
+                .FirstOrDefaultAsync(cancellationToken);
 
-            if (scope == null)
+
+        /// <inheritdoc />
+        public async Task<Role?> UpdateAsync(UpdateRole command, CancellationToken cancellationToken)
+        {
+            var role = await context.Roles
+                .Where(x => x.Id == command.Id)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (role == null)
                 return null;
 
-            scope.Name = command.Name;
-            scope.Description = command.Description;
+            role.Description = command.Description;
+            role.Name = command.Name;
             await context.SaveChangesAsync(cancellationToken);
 
-            return mapper.Map<Scope>(scope);
+            return mapper.Map<Role>(role);
         }
     }
 }

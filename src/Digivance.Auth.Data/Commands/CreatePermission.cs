@@ -45,6 +45,7 @@ namespace Digivance.Auth.Data.Commands
         public const string ERR_ENTITY_ACCESS_TOO_LONG = "Entity access must be 255 characters or less";
         public const string ERR_ENTITY_TYPE_TOO_LONG = "Entity type must be 255 characters or less";
         public const string ERR_SCOPE_MUST_EXISTS = "Scope must exist, or be omitted for global";
+        public const string ERR_TENANT_MUST_EXIST = "A tenant was not found with this id";
 
         private readonly IPermissionService permissionService;
         private readonly IScopeService scopeService;

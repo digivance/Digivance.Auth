@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Serilog;
-using System.Reflection;
 using System.Text.Json;
 
 namespace Digivance.Auth.Api.Middleware

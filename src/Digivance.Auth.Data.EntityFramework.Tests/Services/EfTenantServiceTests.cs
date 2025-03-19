@@ -171,9 +171,9 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
             var updateCommand = new UpdateTenant
             {
+                Name = "newTenant",
                 Description = "abc123456789",
-                Id = newTenant.Id,
-                Name = "newTenant"
+                Id = newTenant.Id
             };
 
             var updatedTenant = await service.UpdateAsync(updateCommand, default);
