@@ -1,6 +1,4 @@
-﻿
-
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using Digivance.Auth.Api.Middleware;
 using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework.Services;
@@ -8,6 +6,7 @@ using Digivance.Auth.Data.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Serilog;
+using System.Security.Claims;
 
 namespace Digivance.Auth.Api.Endpoints
 {
@@ -108,17 +107,26 @@ namespace Digivance.Auth.Api.Endpoints
         /// Deletes an existing tenant account
         /// </summary>
         /// <param name="tenantId">Unique id of the tenant account to delete</param>
-        /// <param name="service">The ITenantService to use</param>
+        /// <param name="tenantService">The ITenantService to use</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Ok()</returns>
         public static async Task<IResult> DeleteAsync
         (
             [FromRoute] Guid tenantId,
-            [FromServices] ITenantService service,
+            [FromServices] IPermissionService permissionService,
+            [FromServices] ITenantService tenantService,
+            ClaimsPrincipal principal,
             CancellationToken cancellationToken
         )
         {
-            await service.DeleteByIdAsync(tenantId, cancellationToken);
+            var tenant = await tenantService.GetByIdAsync(tenantId, cancellationToken);
+            if (tenant == null)
+                return Results.Ok();
+
+            if (!await permissionService.HasPermissionAsync(principal, new Guid(), "DELETE", "TENANT", tenantId, cancellationToken))
+                throw new UnauthorizedAccessException();
+
+            await tenantService.DeleteByIdAsync(tenantId, cancellationToken);
             return Results.Ok();
         }
 

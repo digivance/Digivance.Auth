@@ -3,7 +3,11 @@
 namespace Digivance.Auth.Data.Models
 {
     /// <summary>
-    /// Represents a scope within a tenant. Scopes can be anything the user needs.
+    /// Represents a scope within a tenant. A scope represents a collection of content
+    /// and allows our users to create permissions that apply to specific sub collections.
+    /// For example, considering a social media site, a scope might represent a group,
+    /// and permissions that apply to all entities in this groups scope can administrate
+    /// all posts in that group.
     /// </summary>
     public record Scope : BaseModel
     {

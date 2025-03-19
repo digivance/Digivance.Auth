@@ -18,28 +18,22 @@ namespace Digivance.Auth.Data.EntityFramework.Services
     /// </summary>
     /// <param name="context">The AuthContext to use</param>
     /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
-    public class EfScopeService: IScopeService
+    /// <remarks>
+    /// Standard constructor
+    /// </remarks>
+    /// <param name="context">The AuthContext to use</param>
+    /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
+    public class EfScopeService(AuthContext context, EntityMapper mapper) : IScopeService
     {
         /// <summary>
         /// Internally used AuthContext
         /// </summary>
-        private readonly AuthContext context;
+        private readonly AuthContext context = context;
 
         /// <summary>
         /// Internally used EntityMapper
         /// </summary>
-        private readonly EntityMapper mapper;
-
-        /// <summary>
-        /// Standard constructor
-        /// </summary>
-        /// <param name="context">The AuthContext to use</param>
-        /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
-        public EfScopeService(AuthContext context, EntityMapper mapper)
-        {
-            this.context = context;
-            this.mapper = mapper;
-        }
+        private readonly EntityMapper mapper = mapper;
 
         /// <inheritdoc />
         public async Task<Scope> CreateAsync(CreateScope command, CancellationToken cancellationToken)
@@ -122,6 +116,8 @@ namespace Digivance.Auth.Data.EntityFramework.Services
 
             scope.Name = command.Name;
             scope.Description = command.Description;
+            await context.SaveChangesAsync(cancellationToken);
+
             return mapper.Map<Scope>(scope);
         }
     }

@@ -5,6 +5,8 @@ using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework;
 using Digivance.Auth.Data.EntityFramework.Contexts;
 using Digivance.Auth.Data.EntityFramework.Entities;
+using Digivance.Auth.Data.EntityFramework.Services;
+using Digivance.Auth.Data.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -128,13 +130,17 @@ namespace Digivance.Auth.Api
             services.AddScoped<IValidator<UpdateUser>, UpdateUserValidator>();
             services.AddScoped<IValidator<UpdateRole>, UpdateRoleValidator>();
 
+            // Temporary, remove when we .AddPermissionEndpointV1() below
+            services
+                .AddScoped<IPermissionService, EfPermissionService>();
+
             // Endpoints
             services
                 .AddAuthEndpointV1()
                 .AddHealthEndpointV1()
-                .AddTenantEndpointV1()
-                .AddScopeEndpointV1()
                 .AddRoleEndpointV1()
+                .AddScopeEndpointV1()
+                .AddTenantEndpointV1()
                 .AddUserEndpointV1();
 
             // Swagger

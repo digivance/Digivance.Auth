@@ -37,7 +37,9 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var command = new CreatePermission
             {
                 Description = "Test Permission",
-                Name = "TEST-PERMISSION"
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             // Create and delete our user, we can still Assert expectations against newUser below
@@ -53,7 +55,6 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
                 // Stuff we expect got persisted correctly
                 Assert.That(permission.Description, Is.EqualTo(command.Description));
-                Assert.That(permission.Name, Is.EqualTo(command.Name));
             });
         }
 
@@ -63,12 +64,14 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var command = new CreatePermission
             {
                 Description = "Test Permission",
-                Name = "TEST-PERMISSION"
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             var permission = await service.CreateAsync(command, default);
             await service.DeleteByIdAsync(permission.Id, default);
-            var deletedUser = await service.GetByIdAsync(permission.Id, default);
+            var deletedUser = await service.GetAsync(permission.Id, default);
 
             Assert.That(deletedUser, Is.Null);
         }
@@ -79,7 +82,9 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var command = new CreatePermission
             {
                 Description = "Test Permission",
-                Name = "TEST-PERMISSION"
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             var permission = await service.CreateAsync(command, default);
@@ -95,11 +100,13 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var command = new CreatePermission
             {
                 Description = "Test Permission",
-                Name = "TEST-PERMISSION"
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             var permission = await service.CreateAsync(command, default);
-            var exists = await service.ExistsByNameAsync(command.ScopeId, command.Name, default);
+            var exists = await service.ExistsAsync(command.ScopeId, command.EntityAccess, command.EntityType, command.EntityId, default);
             await service.DeleteByIdAsync(permission.Id, default);
 
             Assert.That(exists, Is.True);
@@ -111,11 +118,13 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var command = new CreatePermission
             {
                 Description = "Test Permission",
-                Name = "TEST-PERMISSION"
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             var permission = await service.CreateAsync(command, default);
-            var model = await service.GetByNameAsync(command.ScopeId, command.Name, default);
+            var model = await service.GetAsync(command.ScopeId, command.EntityAccess, command.EntityType, command.EntityId, default);
             await service.DeleteByIdAsync(permission.Id, default);
 
             Assert.That(model, Is.Not.Null);
@@ -133,11 +142,13 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var command = new CreatePermission
             {
                 Description = "Test Permission",
-                Name = "TEST-PERMISSION"
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             var permission = await service.CreateAsync(command, default);
-            var model = await service.GetByIdAsync(permission.Id, default);
+            var model = await service.GetAsync(permission.Id, default);
             await service.DeleteByIdAsync(permission.Id, default);
 
             Assert.That(model, Is.Not.Null);
@@ -147,7 +158,6 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
                 Assert.That(model.Id, Is.EqualTo(permission.Id));
 
                 Assert.That(model.Description, Is.EqualTo(command.Description));
-                Assert.That(model.Name, Is.EqualTo(command.Name));
             });
         }
 
@@ -157,7 +167,9 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             var createCommand = new CreatePermission
             {
                 Description = "Test Permission",
-                Name = "TEST-PERMISSION"
+                EntityAccess = "Read",
+                EntityType = "Blog",
+                ScopeId = Guid.NewGuid()
             };
 
             var permission = await service.CreateAsync(createCommand, default);
@@ -179,8 +191,6 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             Assert.Multiple(() =>
             {
                 Assert.That(permission.Description, Is.EqualTo(createCommand.Description));
-                Assert.That(permission.Name, Is.EqualTo(createCommand.Name));
-
                 Assert.That(updated.Description, Is.EqualTo(updateCommand.Description));
             });
         }

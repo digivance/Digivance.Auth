@@ -10,29 +10,19 @@ namespace Digivance.Auth.Data.EntityFramework.Services
     /// <summary>
     /// Entity framework implementation of Tenant service
     /// </summary>
-    public class EfTenantService : ITenantService
+    /// <param name="context">The AuthContext to use</param>
+    /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
+    public class EfTenantService(AuthContext context, EntityMapper mapper) : ITenantService
     {
-
         /// <summary>
         /// Internally used AuthContext
         /// </summary>
-        private readonly AuthContext context;
+        private readonly AuthContext context = context;
 
         /// <summary>
         /// Internally used EntityMapper
         /// </summary>
-        private readonly EntityMapper mapper;
-
-        /// <summary>
-        /// Standard constructor
-        /// </summary>
-        /// <param name="context">The AuthContext to use</param>
-        /// <param name="mapper">The EntityMapper we will use when converting to DTOs</param>
-        public EfTenantService(AuthContext context, EntityMapper mapper)
-        {
-            this.context = context;
-            this.mapper = mapper;
-        }
+        private readonly EntityMapper mapper = mapper;
 
         /// <inheritdoc />
         public async Task<Tenant> CreateAsync(CreateTenant command, CancellationToken cancellationToken)
@@ -83,7 +73,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         /// <inheritdoc />
         public Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken)
             => context.Tenants
-                .Where (x => x.Name == name)
+                .Where(x => x.Name == name)
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
@@ -116,8 +106,8 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         public async Task<Tenant> UpdateAsync(UpdateTenant command, CancellationToken cancellationToken)
         {
             var tenant = await context.Tenants
-               .Where(x => x.Id == command.Id)
-               .FirstOrDefaultAsync(cancellationToken);
+              .Where(x => x.Id == command.Id)
+              .FirstOrDefaultAsync(cancellationToken);
 
             if (tenant == null)
                 return null;
@@ -127,6 +117,37 @@ namespace Digivance.Auth.Data.EntityFramework.Services
 
             await context.SaveChangesAsync(cancellationToken);
             return mapper.Map<Tenant>(tenant);
+        }
+    }
+
+    public static class EfTenantServiceExtensions
+    {
+        public static async Task SeedDefaultTenantPermissions(this AuthContext context, Guid? tenantId, CancellationToken cancellationToken)
+        {
+            var scopeExists = await context.Scopes
+                .Where(x => x.TenantId == tenantId)
+                .Where(x => x.Name == "")
+                .AnyAsync(cancellationToken);
+
+            if (scopeExists)
+                return;
+
+            var systemScope = new ScopeEntity
+            {
+                Description = "Default system scope for this tenant",
+                Name = "",
+                TenantId = tenantId,
+            };
+
+            context.Scopes.Add(systemScope);
+            await context.SaveChangesAsync(cancellationToken);
+
+            var permissions = new PermissionEntity[]
+            {
+            };
+
+            context.Permissions.AddRange(permissions);
+            await context.SaveChangesAsync(cancellationToken);
         }
     }
 }

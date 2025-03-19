@@ -3,7 +3,6 @@ using Digivance.Auth.Api.Middleware;
 using Digivance.Auth.Data.Commands;
 using Digivance.Auth.Data.EntityFramework.Services;
 using Digivance.Auth.Data.Services;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Serilog;

@@ -27,8 +27,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            if (context != null)
-                context.Dispose();
+            context?.Dispose();
         }
 
         [TestCase("Test User", "valid@address.com", "password", "testuser")]
@@ -202,7 +201,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var newUser = await service.CreateAsync(command, default);
-            var model = await service.GetByUsernameAsync(newUser.TenantId, newUser.Username, default);
+            var model = await service.GetByUsernameAsync(newUser.TenantId, newUser.Username!, default);
             await service.DeleteByIdAsync(newUser.Id, default);
 
             Assert.That(model, Is.Not.Null);
