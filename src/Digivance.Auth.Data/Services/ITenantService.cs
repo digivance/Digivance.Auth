@@ -22,7 +22,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="tenantId">Unique id of the tenant to delete</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Task to await</returns>
-        public Task DeleteByIdAsync(Guid tenantId, CancellationToken cancellationToken);
+        public Task DeleteAsync(Guid tenantId, CancellationToken cancellationToken);
 
         /// <summary>
         /// Ensures that the tenant id exists
@@ -38,7 +38,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="name">Unique name of the tenant to check</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>True if this tenant name exists</returns>
-        public Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken);
+        public Task<bool> ExistsAsync(string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a tenant by it's id
@@ -46,7 +46,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="tenantId">Unique id of the tenant to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Tenant if found or null</returns>
-        public Task<Tenant?> GetByIdAsync(Guid tenantId, CancellationToken cancellationToken);
+        public Task<Tenant?> GetAsync(Guid tenantId, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a tenant by it's name
@@ -54,7 +54,7 @@ namespace Digivance.Auth.Data.Services
         /// <param name="name">Unique name of the tenant to get</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Tenant if found or null</returns>
-        public Task<Tenant?> GetByNameAsync(string name, CancellationToken cancellationToken);
+        public Task<Tenant?> GetAsync(string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Update an existing tenant

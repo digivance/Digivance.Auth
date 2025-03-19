@@ -116,7 +116,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            await service.DeleteByIdAsync(scopeId, cancellationToken);
+            await service.DeleteAsync(scopeId, cancellationToken);
             return Results.Ok();
         }
 
@@ -156,7 +156,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var exists = await service.ExistsByNameAsync(tenantId, scopename, cancellationToken);
+            var exists = await service.ExistsAsync(tenantId, scopename, cancellationToken);
             return exists ?
                 Results.Ok(true) :
                 Results.NotFound(scopename);
@@ -176,7 +176,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var scope = await service.GetByIdAsync(scopeId, cancellationToken);
+            var scope = await service.GetAsync(scopeId, cancellationToken);
             return scope != null ?
                 Results.Ok(scope) :
                 Results.NotFound(scopeId);
@@ -198,7 +198,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var scope = await service.GetByNameAsync(tenantId, scopename, cancellationToken);
+            var scope = await service.GetAsync(tenantId, scopename, cancellationToken);
             return scope != null ?
                 Results.Ok(scope) :
                 Results.NotFound(scopename);

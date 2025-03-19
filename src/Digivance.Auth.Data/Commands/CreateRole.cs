@@ -105,6 +105,6 @@ namespace Digivance.Auth.Data.Commands
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>True if this is a unique name/scopeid combination</returns>
         public async Task<bool> BeUniqueNamePerScopeAsync(CreateRole command, string name, CancellationToken cancellationToken) =>
-            !await roleService.ExistsByNameAsync(command.ScopeId, name, cancellationToken);
+            !await roleService.ExistsAsync(command.ScopeId, name, cancellationToken);
     }
 }

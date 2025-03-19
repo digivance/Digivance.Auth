@@ -61,6 +61,6 @@ namespace Digivance.Auth.Data.Commands
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>True if this is a unique Tenantname</returns>
         public async Task<bool> BeUniqueTenantname(string tenantname, CancellationToken cancellationToken)
-            => !await tenantService.ExistsByNameAsync(tenantname, cancellationToken);
+            => !await tenantService.ExistsAsync(tenantname, cancellationToken);
     }
 }

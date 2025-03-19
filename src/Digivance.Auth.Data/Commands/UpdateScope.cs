@@ -83,10 +83,10 @@ namespace Digivance.Auth.Data.Commands
         /// <returns>True if this is a unique name/tenantid combination</returns>
         public async Task<bool> BeUniqueNamePerTenantAsync(UpdateScope command, string name, CancellationToken cancellationToken)
         {
-            var scope = await scopeService.GetByIdAsync(command.Id, cancellationToken);
+            var scope = await scopeService.GetAsync(command.Id, cancellationToken);
             var tenantId = scope?.TenantId;
 
-            return !await scopeService.ExistsByNameAsync(tenantId, name, cancellationToken);
+            return !await scopeService.ExistsAsync(tenantId, name, cancellationToken);
         }
             
     }

@@ -45,7 +45,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
             var role = await context.Roles
                 .Where(x => x.Id == id)
@@ -65,14 +65,14 @@ namespace Digivance.Auth.Data.EntityFramework.Services
                 .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public Task<bool> ExistsByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken)
+        public Task<bool> ExistsAsync(Guid scopeId, string name, CancellationToken cancellationToken)
             => context.Roles
                     .Where(x => x.ScopeId == scopeId)
                     .Where(x => x.Name == name)
                     .AnyAsync(cancellationToken);
 
         /// <inheritdoc />
-        public async Task<Role?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Role?> GetAsync(Guid id, CancellationToken cancellationToken)
         {
             var role = await context.Roles
                 .Where(x => x.Id == id)
@@ -85,7 +85,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task<Role?> GetByNameAsync(Guid scopeId, string name, CancellationToken cancellationToken)
+        public async Task<Role?> GetAsync(Guid scopeId, string name, CancellationToken cancellationToken)
         {
             var role = await context.Roles
                 .Where(x => x.ScopeId == scopeId)

@@ -43,7 +43,7 @@ namespace Digivance.Auth.Data.EntityFramework.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteByIdAsync(Guid userId, CancellationToken cancellationToken)
+        public async Task DeleteAsync(Guid userId, CancellationToken cancellationToken)
         {
             var user = await context.UserAccounts
                 .Where(x => x.Id == userId)

@@ -128,7 +128,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            await service.DeleteByIdAsync(userId, cancellationToken);
+            await service.DeleteAsync(userId, cancellationToken);
             return Results.Ok();
         }
 

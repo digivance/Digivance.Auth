@@ -44,7 +44,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
             // Create and delete our user, we can still Assert expectations against newUser below
             var newUser = await service.CreateAsync(command, default);
-            await service.DeleteByIdAsync(newUser.Id, default);
+            await service.DeleteAsync(newUser.Id, default);
 
             Assert.Multiple(() =>
             {
@@ -73,7 +73,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var newUser = await service.CreateAsync(command, default);
-            await service.DeleteByIdAsync(newUser.Id, default);
+            await service.DeleteAsync(newUser.Id, default);
             var deletedUser = await service.GetByIdAsync(newUser.Id, default);
 
             Assert.That(deletedUser, Is.Null);
@@ -92,7 +92,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
             var newUser = await service.CreateAsync(command, default);
             var exists = await service.ExistsAsync(newUser.Id, default);
-            await service.DeleteByIdAsync(newUser.Id, default);
+            await service.DeleteAsync(newUser.Id, default);
 
             Assert.That(exists, Is.True);
         }
@@ -110,7 +110,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
             var newUser = await service.CreateAsync(command, default);
             var exists = await service.ExistsByEmailAsync(command.TenantId, newUser.EmailAddress, default);
-            await service.DeleteByIdAsync(newUser.Id, default);
+            await service.DeleteAsync(newUser.Id, default);
 
             Assert.That(exists, Is.True);
         }
@@ -128,7 +128,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
             var newUser = await service.CreateAsync(command, default);
             var exists = await service.ExistsByUsernameAsync(newUser.TenantId, newUser.Username!, default);
-            await service.DeleteByIdAsync(newUser.Id, default);
+            await service.DeleteAsync(newUser.Id, default);
 
             Assert.That(exists, Is.True);
         }
@@ -146,7 +146,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
             var newUser = await service.CreateAsync(command, default);
             var model = await service.GetByEmailAddressAsync(command.TenantId, newUser.EmailAddress, default);
-            await service.DeleteByIdAsync(newUser.Id, default);
+            await service.DeleteAsync(newUser.Id, default);
 
             Assert.That(model, Is.Not.Null);
             Assert.Multiple(() =>
@@ -174,7 +174,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
             var newUser = await service.CreateAsync(command, default);
             var model = await service.GetByIdAsync(newUser.Id, default);
-            await service.DeleteByIdAsync(newUser.Id, default);
+            await service.DeleteAsync(newUser.Id, default);
 
             Assert.That(model, Is.Not.Null);
             Assert.Multiple(() =>
@@ -202,7 +202,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
 
             var newUser = await service.CreateAsync(command, default);
             var model = await service.GetByUsernameAsync(newUser.TenantId, newUser.Username!, default);
-            await service.DeleteByIdAsync(newUser.Id, default);
+            await service.DeleteAsync(newUser.Id, default);
 
             Assert.That(model, Is.Not.Null);
             Assert.Multiple(() =>
@@ -238,7 +238,7 @@ namespace Digivance.Auth.Data.EntityFramework.Tests.Services
             };
 
             var updatedUser = await service.UpdateAsync(updateCommand, default);
-            await service.DeleteByIdAsync(newUser.Id, default);
+            await service.DeleteAsync(newUser.Id, default);
 
             Assert.Multiple(() =>
             {

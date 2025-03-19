@@ -116,7 +116,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            await service.DeleteByIdAsync(roleId, cancellationToken);
+            await service.DeleteAsync(roleId, cancellationToken);
             return Results.Ok();
         }
 
@@ -156,7 +156,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var exists = await service.ExistsByNameAsync(scopeId, rolename, cancellationToken);
+            var exists = await service.ExistsAsync(scopeId, rolename, cancellationToken);
             return exists ?
                 Results.Ok(true) :
                 Results.NotFound(rolename);
@@ -176,7 +176,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var role = await service.GetByIdAsync(roleId, cancellationToken);
+            var role = await service.GetAsync(roleId, cancellationToken);
             return role != null ?
                 Results.Ok(role) :
                 Results.NotFound(roleId);
@@ -198,7 +198,7 @@ namespace Digivance.Auth.Api.Endpoints
             CancellationToken cancellationToken
         )
         {
-            var role = await service.GetByNameAsync(scopeId, rolename, cancellationToken);
+            var role = await service.GetAsync(scopeId, rolename, cancellationToken);
             return role != null ?
                 Results.Ok(role) :
                 Results.NotFound(rolename);

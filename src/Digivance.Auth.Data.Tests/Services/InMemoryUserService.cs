@@ -29,7 +29,7 @@ namespace Digivance.Auth.Data.Tests.Services
         }
 
         /// <inheritdoc />
-        public Task DeleteByIdAsync(Guid userId, CancellationToken cancellationToken)
+        public Task DeleteAsync(Guid userId, CancellationToken cancellationToken)
         {
             var user = users.FirstOrDefault(x => x.Id == userId);
             if (user != null)
