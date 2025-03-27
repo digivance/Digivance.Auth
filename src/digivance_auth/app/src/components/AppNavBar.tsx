@@ -1,4 +1,4 @@
-import { AppShell, Container } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import * as React from 'react';
 const AppNavBar: React.FC = () => {
   return <AppShell.Navbar>

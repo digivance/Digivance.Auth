@@ -1,4 +1,4 @@
-import { AppShell, Container } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import * as React from 'react';
 const AppMain: React.FC = () => {
   return       <AppShell.Main>

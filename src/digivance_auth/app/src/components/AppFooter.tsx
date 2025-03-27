@@ -1,4 +1,4 @@
-import { AppShell, Center, Container } from '@mantine/core';
+import { AppShell, Center } from '@mantine/core';
 import * as React from 'react';
 const AppFooter: React.FC = () => {
   return <AppShell.Footer p="md">
