@@ -5,6 +5,7 @@ import AppNavBar from "./components/AppNavBar";
 import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
 import AppMain from "./components/AppMain";
+import { AppShell, MantineProvider } from "@mantine/core";
 
 const App: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
