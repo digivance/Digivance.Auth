@@ -21,7 +21,7 @@ const App: React.FC = () => {
       }}
       padding="md"
     >  
-      <AppHeader />
+      <AppHeader isOpen={opened} toggleOpen={toggle}/>
       <AppNavBar />
       <AppMain/>
       <AppFooter/>
