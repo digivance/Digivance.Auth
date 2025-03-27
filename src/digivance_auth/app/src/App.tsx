@@ -1,4 +1,3 @@
-import { AppShell, AppShellProps, Burger, Center, Container, Flex, MantineProvider } from "@mantine/core";
 import React from "react";
 import { useDisclosure } from "@mantine/hooks";
 import '@mantine/core/styles.css';
