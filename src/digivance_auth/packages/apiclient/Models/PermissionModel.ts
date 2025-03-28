@@ -1,7 +1,8 @@
+import BaseModel from "./BaseModel";
 import RoleModel from "./RoleModel";
 import ScopeModel from "./ScopeModel";
 
-export interface PermissionModel {
+export interface PermissionModel extends BaseModel {
     /**
      * User friendly description of this permission
      */

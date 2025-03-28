@@ -2,12 +2,13 @@ import { PermissionModel } from "./PermissionModel";
 import RoleModel from "./RoleModel";
 import ScopeModel from "./ScopeModel";
 import UserModel from "./UserModel";
+import BaseModel from "./BaseModel";
 
 /**
  * A tenant is a collection of auth related entities such as scopes, user accounts,
  * roles, permissions, oauth applications and more
  */
-export default interface TenantModel {
+export default interface TenantModel extends BaseModel{
     /**
      * User friendly description of this tenant
      */

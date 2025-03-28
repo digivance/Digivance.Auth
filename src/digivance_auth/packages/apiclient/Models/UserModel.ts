@@ -1,8 +1,9 @@
+import BaseModel from "./BaseModel";
 import { PermissionModel } from "./PermissionModel";
 import RoleModel from "./RoleModel";
 import TenantModel from "./TenantModel";
 
-export default interface UserModel {
+export default interface UserModel extends BaseModel{
     /**
      * Optional display name that the user can choose to identify themselves as
      */
