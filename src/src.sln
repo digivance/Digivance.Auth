@@ -1,0 +1,54 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Api", "Digivance.Auth.Api\Digivance.Auth.Api.csproj", "{09DE7FDF-BDE3-1048-92D9-7DAB2A7FB122}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Client", "Digivance.Auth.Client\Digivance.Auth.Client.csproj", "{58985F2E-1635-C1E6-5DFE-089FB596AEC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data", "Digivance.Auth.Data\Digivance.Auth.Data.csproj", "{2523DCAB-13AF-676D-148A-CAD6A9A6CAB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.EntityFramework", "Digivance.Auth.Data.EntityFramework\Digivance.Auth.Data.EntityFramework.csproj", "{2D5F4CC2-2242-43A1-F917-B4B06D459297}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.EntityFramework.Tests", "Digivance.Auth.Data.EntityFramework.Tests\Digivance.Auth.Data.EntityFramework.Tests.csproj", "{EFE20CB6-F029-4D3C-A16D-F8101444ABA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digivance.Auth.Data.Tests", "Digivance.Auth.Data.Tests\Digivance.Auth.Data.Tests.csproj", "{CBB92ADC-F1AE-E6D5-3DB4-A490AD770623}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09DE7FDF-BDE3-1048-92D9-7DAB2A7FB122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09DE7FDF-BDE3-1048-92D9-7DAB2A7FB122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09DE7FDF-BDE3-1048-92D9-7DAB2A7FB122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09DE7FDF-BDE3-1048-92D9-7DAB2A7FB122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58985F2E-1635-C1E6-5DFE-089FB596AEC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58985F2E-1635-C1E6-5DFE-089FB596AEC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58985F2E-1635-C1E6-5DFE-089FB596AEC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58985F2E-1635-C1E6-5DFE-089FB596AEC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2523DCAB-13AF-676D-148A-CAD6A9A6CAB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2523DCAB-13AF-676D-148A-CAD6A9A6CAB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2523DCAB-13AF-676D-148A-CAD6A9A6CAB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2523DCAB-13AF-676D-148A-CAD6A9A6CAB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D5F4CC2-2242-43A1-F917-B4B06D459297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D5F4CC2-2242-43A1-F917-B4B06D459297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D5F4CC2-2242-43A1-F917-B4B06D459297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D5F4CC2-2242-43A1-F917-B4B06D459297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFE20CB6-F029-4D3C-A16D-F8101444ABA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFE20CB6-F029-4D3C-A16D-F8101444ABA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFE20CB6-F029-4D3C-A16D-F8101444ABA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFE20CB6-F029-4D3C-A16D-F8101444ABA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBB92ADC-F1AE-E6D5-3DB4-A490AD770623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBB92ADC-F1AE-E6D5-3DB4-A490AD770623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBB92ADC-F1AE-E6D5-3DB4-A490AD770623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBB92ADC-F1AE-E6D5-3DB4-A490AD770623}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CC74407D-3213-4AFC-9216-F15584643AD7}
+	EndGlobalSection
+EndGlobal
